@@ -1,0 +1,17 @@
+﻿  stdafx.cpp
+  AssetManager.cpp
+  CatFighters.cpp
+  Game.cpp
+  InputManager.cpp
+c:\networking_cw\catfighters\inputmanager.cpp(16): warning C4551: function call missing argument list
+c:\networking_cw\catfighters\inputmanager.cpp(18): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\networking_cw\catfighters\inputmanager.cpp(18): warning C4244: 'argument': conversion from 'const float' to 'int', possible loss of data
+  Menu.cpp
+c:\networking_cw\catfighters\menu.cpp(12): warning C4129: 'M': unrecognized character escape sequence
+c:\networking_cw\catfighters\menu.cpp(15): warning C4129: 'M': unrecognized character escape sequence
+c:\networking_cw\catfighters\menu.cpp(15): warning C4129: 'B': unrecognized character escape sequence
+  StateMachine.cpp
+  Generating code
+  All 464 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  CatFighters.vcxproj -> C:\Networking_CW\CatFighters\Release\CatFighters.exe
