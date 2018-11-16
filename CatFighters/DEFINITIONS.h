@@ -16,3 +16,7 @@
 #define HEALTH_BORDER "Resources/res/Game/healthBorder.png"
 
 #define HEALTH_BAR "Resources/res/Game/healthBar.png"
+
+#define PLAYER_SPRITE_SIMBA_IDLE "Resources/res/Game/idleSimbaSheet.png"
+
+#define BACKGROUND_GAME "Resources/res/Game/field.png"

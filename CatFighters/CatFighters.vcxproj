@@ -159,6 +159,7 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerSheet.h" />
     <ClInclude Include="PlayState.h" />
     <ClInclude Include="SelectCharacterState.h" />
     <ClInclude Include="State.h" />
@@ -173,6 +174,7 @@
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerSheet.cpp" />
     <ClCompile Include="PlayState.cpp" />
     <ClCompile Include="SelectCharacterState.cpp" />
     <ClCompile Include="StateMachine.cpp" />

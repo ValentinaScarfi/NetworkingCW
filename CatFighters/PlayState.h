@@ -32,6 +32,10 @@ private:
 	sf::Sprite healthBorder;
 	sf::Sprite healthBar;
 
+	sf::Sprite playerSprite;
+
 	sf::Vector2f originalHealthScale;
 	sf::Vector2f originalHealthPos;
+
+
 };

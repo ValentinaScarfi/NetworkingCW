@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Game.h"
 #include "Menu.h"
+#include <iostream>
 
 Game::Game(int width, int height, std::string title)
 {
@@ -36,7 +37,7 @@ void Game::Run()
 		{
 			this->_data->machine.GetActiveState()->HandleInput();
 			this->_data->machine.GetActiveState()->Update(dt);
-
+			
 			accumulator -= dt;
 		}
 

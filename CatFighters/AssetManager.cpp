@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #include "AssetManager.h"
 
-void AssetManager::LoadTexture(std::string name, std::string fileName)
+void AssetManager::LoadTexture(std::string name, std::string fileName, sf::IntRect rect)
 {
 	sf::Texture tex;
 
-	if (tex.loadFromFile(fileName))
+	if (tex.loadFromFile(fileName, rect))
 	{
 		this->_textures[name] = tex;
 	}

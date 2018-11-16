@@ -10,17 +10,23 @@ PlayState::PlayState(int playerSprite, GameDataRef data) : _data(data)
 
 void PlayState::Init()
 {
+	this->_data->assets.LoadTexture("Game Background", BACKGROUND_GAME);
+	background.setTexture(this->_data->assets.GetTexture("Game Background"));
+
 	//Border of health bar
 	this->_data->assets.LoadTexture("Health Border", HEALTH_BORDER);
 	healthBorder.setTexture(this->_data->assets.GetTexture("Health Border"));
 	this->healthBorder.setScale(0.4f, 0.4f);
 	this->healthBorder.setPosition(50, (50 - (this->healthBorder.getGlobalBounds().height / 2)));
 
+	//health bar
 	this->_data->assets.LoadTexture("Health Bar", HEALTH_BAR);
 	healthBar.setTexture(this->_data->assets.GetTexture("Health Bar"));
 	this->healthBar.setScale(0.4f, 0.4f);
 	this->originalHealthScale = this->healthBar.getScale();
 	this->healthBar.setPosition(50, (50 - (this->healthBar.getGlobalBounds().height / 2)));
+
+	player->mySprite.loadSprite(3, 2);
 }
 
 void PlayState::HandleInput()
@@ -39,12 +45,23 @@ void PlayState::HandleInput()
 			this->player->getDamage();
 			healthBar.setScale(calculatePercentage(originalHealthScale.x, player->health), healthBar.getScale().y);
 		}
+
+		if (this->_data->input.isKeyPressed(event, sf::Keyboard::D))
+		{
+			this->player->moveRight();
+		}
+
+		if (this->_data->input.isKeyPressed(event, sf::Keyboard::A))
+		{
+			this->player->moveLeft();
+		}
 	}
 }
 
 void PlayState::Update(float dt)
 {
-	
+	player->mySprite.Animate(dt, 3, 2);
+	player->windowSize = this->_data->window.getView().getSize().x;
 }
 
 void PlayState::Draw(float dt)
@@ -62,8 +79,10 @@ void PlayState::Draw(float dt)
 		break;
 	}
 
+	this->_data->window.draw(this->background);
 	this->_data->window.draw(this->healthBorder);
 	this->_data->window.draw(this->healthBar);
+	player->mySprite.Draw(this->_data->window);
 
 	this->_data->window.display();
 }
