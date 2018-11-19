@@ -1,5 +1,2 @@
-﻿  PlayerSheet.cpp
-c:\networking_cw\networkingcw\catfighters\playersheet.cpp(32): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\networking_cw\networkingcw\catfighters\playersheet.cpp(42): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\networking_cw\networkingcw\catfighters\playersheet.cpp(53): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+﻿  PlayState.cpp
   CatFighters.vcxproj -> C:\Networking_CW\NetworkingCW\CatFighters\Debug\CatFighters.exe

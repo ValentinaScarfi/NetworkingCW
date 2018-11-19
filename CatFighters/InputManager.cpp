@@ -25,7 +25,7 @@ bool InputManager::isSpriteClicked(sf::Sprite object, sf::Mouse::Button button, 
 	return false;
 }
 
-bool InputManager::isKeyPressed(sf::Event event, sf::Keyboard::Key key)
+bool InputManager::isActionKeyPressed(sf::Event event, sf::Keyboard::Key key)
 {
 	bool keyState = false;
 
@@ -45,6 +45,16 @@ bool InputManager::isKeyPressed(sf::Event event, sf::Keyboard::Key key)
 			keyState = false;
 		}
 	}
+	return false;
+}
+
+bool InputManager::isAxisKeyPressed(sf::Keyboard::Key key)
+{
+	if (sf::Keyboard::isKeyPressed(key))
+	{
+		return true;
+	}
+
 	return false;
 }
 

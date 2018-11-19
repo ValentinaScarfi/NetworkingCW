@@ -9,7 +9,7 @@ public:
 	~Player();
 
 	int health = 100;
-	float speed = 20.0f;
+	float speed = 700.0f;
 
 	void getDamage();
 
@@ -17,11 +17,18 @@ public:
 
 	float windowSize;
 
-	void moveLeft();
-	void moveRight();
+	void moveLeft(float dt);
+	void moveRight(float dt);
+	void jump(float dt);
+
+	bool canJump = true;
+	sf::Vector2f velocity;
 
 private:
 	float thresholdBound = 100;
 	
+	float jumpHeight = 150;
+
+	float groundFloor;
 };
 

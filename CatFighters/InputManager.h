@@ -11,7 +11,9 @@ public:
 	bool isSpriteClicked(sf::Sprite object, sf::Mouse::Button button, sf::RenderWindow &window);
 	sf::Vector2i GetMousePosition(sf::RenderWindow &window);
 
-	bool isKeyPressed(sf::Event event, sf::Keyboard::Key key);
+	bool isActionKeyPressed(sf::Event event, sf::Keyboard::Key key);
+
+	bool isAxisKeyPressed(sf::Keyboard::Key key);
 
 private:
 };

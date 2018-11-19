@@ -7,6 +7,7 @@ Game::Game(int width, int height, std::string title)
 {
 	_data->window.create(sf::VideoMode(width, height), title);
 ;	_data->machine.AddState(StateRef(new Menu(this->_data)));
+	_data->window.setFramerateLimit(60);
 
 	this->Run();
 }

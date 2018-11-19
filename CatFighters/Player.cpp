@@ -4,6 +4,8 @@
 
 Player::Player(int playerSpriteID)
 {
+	groundFloor = 400.0f;
+
 }
 
 
@@ -16,10 +18,13 @@ void Player::getDamage()
 	this->health -= 1;
 }
 
-void Player::moveLeft()
+void Player::moveLeft(float dt)
 {
+
 	float left = thresholdBound;
-	sf::Vector2f move;
+
+	velocity.x = 0.0f;
+
 
 	if (mySprite.activeSprite.getPosition().x <= left)
 	{
@@ -27,10 +32,8 @@ void Player::moveLeft()
 	}
 	else
 	{
-		move.x--;
+		velocity.x -= speed;
 	}
-
-	mySprite.activeSprite.move(move * speed);
 
 	if (mySprite.activeSprite.getScale().x > 0)
 	{
@@ -39,10 +42,11 @@ void Player::moveLeft()
 	
 }
 
-void Player::moveRight()
+void Player::moveRight(float dt)
 {
 	float right = windowSize - thresholdBound;
-	sf::Vector2f move;
+
+	velocity.x = 0.0f;
 
 	if (mySprite.activeSprite.getPosition().x >= right)
 	{
@@ -50,13 +54,21 @@ void Player::moveRight()
 	}
 	else
 	{
-		move.x++;
+		velocity.x += speed;
 	}
-
-	mySprite.activeSprite.move(move * speed);
 
 	if (mySprite.activeSprite.getScale().x < 0)
 	{
 		mySprite.activeSprite.setScale(mySprite.activeSprite.getScale().x * -1.0f, mySprite.activeSprite.getScale().y);
 	}
+}
+
+void Player::jump(float dt)
+{
+
+	// square root (2.0f * gravity * jumpHeight)
+
+	velocity.y = -sqrtf(2.0f * GRAVITY * jumpHeight);
+	
+	std::cout << velocity.y << "\n";
 }

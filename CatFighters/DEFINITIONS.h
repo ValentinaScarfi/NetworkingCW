@@ -20,3 +20,5 @@
 #define PLAYER_SPRITE_SIMBA_IDLE "Resources/res/Game/idleSimbaSheet.png"
 
 #define BACKGROUND_GAME "Resources/res/Game/field.png"
+
+#define GRAVITY 1500

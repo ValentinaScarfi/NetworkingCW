@@ -35,26 +35,17 @@ void PlayState::HandleInput()
 
 	while (this->_data->window.pollEvent(event))
 	{
-		if (sf::Event::Closed == event.type)
+		if (sf::Event::Closed == event.type || this->_data->input.isActionKeyPressed(event, sf::Keyboard::Escape))
 		{
 			this->_data->window.close();
 		}
 
-		if (this->_data->input.isKeyPressed(event, sf::Keyboard::H))
+		if (this->_data->input.isActionKeyPressed(event, sf::Keyboard::H))
 		{
 			this->player->getDamage();
 			healthBar.setScale(calculatePercentage(originalHealthScale.x, player->health), healthBar.getScale().y);
 		}
 
-		if (this->_data->input.isKeyPressed(event, sf::Keyboard::D))
-		{
-			this->player->moveRight();
-		}
-
-		if (this->_data->input.isKeyPressed(event, sf::Keyboard::A))
-		{
-			this->player->moveLeft();
-		}
 	}
 }
 
@@ -62,6 +53,38 @@ void PlayState::Update(float dt)
 {
 	player->mySprite.Animate(dt, 3, 2);
 	player->windowSize = this->_data->window.getView().getSize().x;
+
+	if (this->_data->input.isAxisKeyPressed(sf::Keyboard::D))
+	{
+		this->player->moveRight(dt);
+	}
+	else if (this->_data->input.isAxisKeyPressed(sf::Keyboard::A))
+	{
+		this->player->moveLeft(dt);
+	}
+	else
+	{
+		this->player->velocity.x = 0.0f;
+	}
+
+	if (this->_data->input.isAxisKeyPressed(sf::Keyboard::Space) && this->player->canJump)
+	{
+		this->player->canJump = false;
+		this->player->jump(dt);
+	}
+
+	this->player->mySprite.activeSprite.move(this->player->velocity * dt);
+
+	if (this->player->mySprite.activeSprite.getPosition().y < 400)
+	{
+		this->player->velocity.y += GRAVITY * dt;
+		this->player->mySprite.activeSprite.move(this->player->velocity * dt);
+	}
+	else
+	{
+		this->player->velocity.y = 0.0f;
+		this->player->canJump = true;
+	}
 }
 
 void PlayState::Draw(float dt)

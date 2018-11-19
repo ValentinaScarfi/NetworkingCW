@@ -76,5 +76,6 @@ void PlayerSheet::loadSprite(int columns, int rows)
 	idle.setPosition(170, 400);
 	idle.setOrigin(idle.getLocalBounds().width / 2, 0);
 
+	std::cout << idle.getPosition().y;
 	activeSprite = idle;
 }
