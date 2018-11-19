@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SelectCharacterState.h"
 #include "PlayState.h"
+#include "ClientMatchmakeState.h"
 #include <iostream>
 
 
@@ -43,15 +44,15 @@ void SelectCharacterState::HandleInput()
 
 		if (this->_data->input.isSpriteClicked(this->simbaSelection, sf::Mouse::Left, this->_data->window))
 		{
-			this->_data->machine.AddState(StateRef(new PlayState(1, _data)), true);
+			this->_data->machine.AddState(StateRef(new ClientMatchmakeState(1, _data)), true);
 		}
 		else if (this->_data->input.isSpriteClicked(this->pepperSelection, sf::Mouse::Left, this->_data->window))
 		{
-			this->_data->machine.AddState(StateRef(new PlayState(2, _data)), true);
+			this->_data->machine.AddState(StateRef(new ClientMatchmakeState(2, _data)), true);
 		}
 		else if (this->_data->input.isSpriteClicked(this->gigioSelection, sf::Mouse::Left, this->_data->window))
 		{
-			this->_data->machine.AddState(StateRef(new PlayState(3, _data)), true);
+			this->_data->machine.AddState(StateRef(new ClientMatchmakeState(3, _data)), true);
 		}
 	}
 }

@@ -54,6 +54,9 @@
     <ClInclude Include="PlayerSheet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ClientMatchmakeState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -87,6 +90,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PlayerSheet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientMatchmakeState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
