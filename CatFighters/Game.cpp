@@ -9,6 +9,9 @@ Game::Game(int width, int height, std::string title)
 ;	_data->machine.AddState(StateRef(new Menu(this->_data)));
 	_data->window.setFramerateLimit(60);
 
+	_data->assets.LoadFont("Default Font", FONT);
+	_data->assets.LoadTexture("Generic Texture", GENERIC_TEXTURE);
+
 	this->Run();
 }
 

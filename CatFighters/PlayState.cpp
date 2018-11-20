@@ -89,6 +89,8 @@ void PlayState::Update(float dt)
 
 void PlayState::Draw(float dt)
 {
+	this->_data->window.clear();
+
 	switch (spriteID)
 	{
 	case 1:

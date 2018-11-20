@@ -25,6 +25,19 @@ bool InputManager::isSpriteClicked(sf::Sprite object, sf::Mouse::Button button, 
 	return false;
 }
 
+bool InputManager::isShapeClicked(sf::RectangleShape object, sf::Mouse::Button button, sf::RenderWindow & window)
+{
+	if (sf::Mouse::isButtonPressed(button))
+	{
+		if (object.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 bool InputManager::isActionKeyPressed(sf::Event event, sf::Keyboard::Key key)
 {
 	bool keyState = false;

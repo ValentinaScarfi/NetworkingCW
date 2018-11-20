@@ -23,5 +23,30 @@ private:
 
 	int tempSpriteID;
 
+	//Main UI
+	sf::Text Title;
+	sf::Sprite buttonConnect;
+	sf::Text errorMessage;
+
+	//ip variables
+	sf::Text IPCaption;
+	sf::Text IPText;
+	std::string ipString = "";
+	sf::RectangleShape textBoxIP;
+
+	//port variables
+	sf::Text portCaption;
+	sf::Text portText;
+	std::string portString = "";
+	sf::RectangleShape textBoxPort;
+
+	
+	bool isIPFocus = false;
+	bool isPortFocus = false;
+
+	bool isInLobby = false;
+
+	sf::Socket::Status status;
+
 };
 

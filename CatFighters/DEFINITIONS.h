@@ -3,6 +3,10 @@
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 
+#define FONT "Resources/res/Font/ErasBoldITC.ttf"
+
+#define GENERIC_TEXTURE "Resources/res/GenericTexture.png"
+
 #define BACKGROUND_MENU_PATH "Resources/res/MainMenu/MenuBackground.jpg"
 
 #define PLAY_BUTTON_PATH "Resources/res/MainMenu/ButtonPlay.png"
@@ -20,5 +24,7 @@
 #define PLAYER_SPRITE_SIMBA_IDLE "Resources/res/Game/idleSimbaSheet.png"
 
 #define BACKGROUND_GAME "Resources/res/Game/field.png"
+
+#define BUTTON_CONNECT "Resources/res/Lobby/ButtonConnect.png"
 
 #define GRAVITY 1500
