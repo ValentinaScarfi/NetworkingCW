@@ -168,13 +168,11 @@ void ClientMatchmakeState::HandleInput()
 
 void ClientMatchmakeState::Update(float dt)
 {
+	std::size_t dummy = 12;
+
 	if (isInLobby)
 	{
-		int port = std::stoi(portString);
-
-		status = socket.connect(ipString, port);
-
-		if (status != sf::Socket::Done)
+		if (socket.send(&dummy, 12) != sf::Socket::Done)
 		{
 			errorMessage.setString("Disconnected!");
 			errorMessage.setFillColor(sf::Color::Red);
