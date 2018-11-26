@@ -42,15 +42,15 @@ void SelectCharacterState::HandleInput()
 			this->_data->window.close();
 		}
 
-		if (this->_data->input.isSpriteClicked(this->simbaSelection, sf::Mouse::Left, this->_data->window))
+		if (this->_data->input.isSpriteClicked(this->simbaSelection, event, this->_data->window))
 		{
 			this->_data->machine.AddState(StateRef(new ClientMatchmakeState(1, _data)), true);
 		}
-		else if (this->_data->input.isSpriteClicked(this->pepperSelection, sf::Mouse::Left, this->_data->window))
+		else if (this->_data->input.isSpriteClicked(this->pepperSelection, event, this->_data->window))
 		{
 			this->_data->machine.AddState(StateRef(new ClientMatchmakeState(2, _data)), true);
 		}
-		else if (this->_data->input.isSpriteClicked(this->gigioSelection, sf::Mouse::Left, this->_data->window))
+		else if (this->_data->input.isSpriteClicked(this->gigioSelection, event, this->_data->window))
 		{
 			this->_data->machine.AddState(StateRef(new ClientMatchmakeState(3, _data)), true);
 		}

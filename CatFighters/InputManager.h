@@ -8,8 +8,8 @@ public:
 	InputManager();
 	~InputManager();
 
-	bool isSpriteClicked(sf::Sprite object, sf::Mouse::Button button, sf::RenderWindow &window);
-	bool isShapeClicked(sf::RectangleShape object, sf::Mouse::Button button, sf::RenderWindow &window);
+	bool isSpriteClicked(sf::Sprite object, sf::Event event, sf::RenderWindow &window);
+	bool isShapeClicked(sf::RectangleShape object, sf::Event event, sf::RenderWindow &window);
 
 	sf::Vector2i GetMousePosition(sf::RenderWindow &window);
 

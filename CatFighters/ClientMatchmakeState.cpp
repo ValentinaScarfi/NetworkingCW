@@ -123,7 +123,7 @@ void ClientMatchmakeState::HandleInput()
 			portText.setPosition((SCREEN_WIDTH / 2) - (this->portText.getGlobalBounds().width / 2), 400.0f);
 		}
 
-		if (this->_data->input.isShapeClicked(this->textBoxIP, sf::Mouse::Left, this->_data->window))
+		if (this->_data->input.isShapeClicked(this->textBoxIP, event, this->_data->window))
 		{
 			textBoxIP.setOutlineColor(sf::Color::Red);
 			textBoxIP.setOutlineThickness(3.f);
@@ -132,7 +132,7 @@ void ClientMatchmakeState::HandleInput()
 			textBoxPort.setOutlineThickness(0.f);
 		}
 
-		if (this->_data->input.isShapeClicked(this->textBoxPort, sf::Mouse::Left, this->_data->window))
+		if (this->_data->input.isShapeClicked(this->textBoxPort, event, this->_data->window))
 		{
 			textBoxPort.setOutlineColor(sf::Color::Red);
 			textBoxPort.setOutlineThickness(3.f);
@@ -141,7 +141,7 @@ void ClientMatchmakeState::HandleInput()
 			textBoxIP.setOutlineThickness(0.f);
 		}
 
-		if (this->_data->input.isSpriteClicked(this->buttonConnect, sf::Mouse::Left, this->_data->window))
+		if (this->_data->input.isSpriteClicked(this->buttonConnect, event, this->_data->window))
 		{
 			if (portString.length() > 0)
 			{
@@ -168,11 +168,11 @@ void ClientMatchmakeState::HandleInput()
 
 void ClientMatchmakeState::Update(float dt)
 {
-	std::size_t dummy = 12;
+	std::size_t dummy = 1;
 
 	if (isInLobby)
 	{
-		if (socket.send(&dummy, 12) != sf::Socket::Done)
+		if (socket.send(&dummy, 1) != sf::Socket::Done)
 		{
 			errorMessage.setString("Disconnected!");
 			errorMessage.setFillColor(sf::Color::Red);

@@ -12,9 +12,9 @@ InputManager::~InputManager()
 {
 }
 
-bool InputManager::isSpriteClicked(sf::Sprite object, sf::Mouse::Button button, sf::RenderWindow & window)
+bool InputManager::isSpriteClicked(sf::Sprite object, sf::Event event, sf::RenderWindow & window)
 {
-	if (sf::Mouse::isButtonPressed(button))
+	if (event.type == sf::Event::MouseButtonPressed)
 	{
 		if (object.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
 		{
@@ -25,9 +25,9 @@ bool InputManager::isSpriteClicked(sf::Sprite object, sf::Mouse::Button button, 
 	return false;
 }
 
-bool InputManager::isShapeClicked(sf::RectangleShape object, sf::Mouse::Button button, sf::RenderWindow & window)
+bool InputManager::isShapeClicked(sf::RectangleShape object, sf::Event event, sf::RenderWindow & window)
 {
-	if (sf::Mouse::isButtonPressed(button))
+	if (event.type == sf::Event::MouseButtonPressed)
 	{
 		if (object.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
 		{
