@@ -47,6 +47,7 @@ private:
 	bool isInLobby = false;
 
 	sf::Socket::Status status;
+	int packetCounter = 0;
 
 };
 

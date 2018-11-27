@@ -168,11 +168,15 @@ void ClientMatchmakeState::HandleInput()
 
 void ClientMatchmakeState::Update(float dt)
 {
-	std::size_t dummy = 1;
+	sf::Packet packetReceived;
+	sf::Packet packetSend;
+	std::string s;
 
 	if (isInLobby)
 	{
-		if (socket.send(&dummy, 1) != sf::Socket::Done)
+		sf::Socket::Status status = socket.receive(packetReceived);
+
+		if (status != sf::Socket::Done)
 		{
 			errorMessage.setString("Disconnected!");
 			errorMessage.setFillColor(sf::Color::Red);
@@ -182,6 +186,14 @@ void ClientMatchmakeState::Update(float dt)
 			Title.setFillColor(sf::Color::White);
 			Title.setPosition((SCREEN_WIDTH / 2) - (this->Title.getGlobalBounds().width / 2), 50.0f);
 			isInLobby = false;
+		}
+		else
+		{
+			packetReceived >> s;
+			std::cout << s << packetCounter << std::endl;
+			packetSend << s << packetCounter;
+			socket.send(packetSend);
+			packetCounter++;
 		}
 	}
 }
