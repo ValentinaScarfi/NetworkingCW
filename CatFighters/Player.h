@@ -10,10 +10,11 @@ public:
 
 	int health = 100;
 	float speed = 700.0f;
+	int spriteID;
 
 	void getDamage();
 
-	PlayerSheet mySprite;	
+	PlayerSheet mySprite;
 
 	float windowSize;
 

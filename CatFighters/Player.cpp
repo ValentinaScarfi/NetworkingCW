@@ -2,10 +2,10 @@
 #include "Player.h"
 #include <iostream>
 
-Player::Player(int playerSpriteID)
+Player::Player(int playerSpriteID) : mySprite(playerSpriteID)
 {
 	groundFloor = 400.0f;
-
+	this->spriteID = playerSpriteID;
 }
 
 

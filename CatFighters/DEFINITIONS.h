@@ -23,6 +23,8 @@
 
 #define PLAYER_SPRITE_SIMBA_IDLE "Resources/res/Game/idleSimbaSheet.png"
 
+#define PLAYER_SPRITE_GIGIO_IDLE "Resources/res/Game/idleGigioSheet.png"
+
 #define BACKGROUND_GAME "Resources/res/Game/field.png"
 
 #define BUTTON_CONNECT "Resources/res/Lobby/ButtonConnect.png"

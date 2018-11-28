@@ -5,14 +5,17 @@
 class PlayerSheet
 {
 public:
-	PlayerSheet();
+	PlayerSheet(int spriteID);
 	~PlayerSheet();
 
 	void Draw(sf::RenderWindow &window);
 
 	void Animate(float dt, int columns, int rows);
 
-	void loadSprite(int columns, int rows);
+	void loadSprite(int columns, int rows, bool secondPlayer = false);
+
+	int columns;
+	int rows;
 
 	sf::IntRect playerIdleSource;
 	sf::Vector2i frameSize;

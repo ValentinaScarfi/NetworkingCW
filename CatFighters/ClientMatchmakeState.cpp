@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SFML\Graphics\Text.hpp"
 #include "ClientMatchmakeState.h"
+#include "PlayState.h"
 #include <iostream>
 
 // The IP address for the server to listen on
@@ -168,13 +169,15 @@ void ClientMatchmakeState::HandleInput()
 
 void ClientMatchmakeState::Update(float dt)
 {
-	sf::Packet packetReceived;
-	sf::Packet packetSend;
+	sf::Packet packet;
+	sf::Packet packetS;
+	std::string opponentIp;
+	unsigned short opponentPort;
 	std::string s;
 
 	if (isInLobby)
 	{
-		sf::Socket::Status status = socket.receive(packetReceived);
+		sf::Socket::Status status = socket.receive(packet);
 
 		if (status != sf::Socket::Done)
 		{
@@ -185,15 +188,25 @@ void ClientMatchmakeState::Update(float dt)
 			Title.setString("Connect to Server Lobby");
 			Title.setFillColor(sf::Color::White);
 			Title.setPosition((SCREEN_WIDTH / 2) - (this->Title.getGlobalBounds().width / 2), 50.0f);
+			packetCounter = 0;
 			isInLobby = false;
 		}
 		else
 		{
-			packetReceived >> s;
-			std::cout << s << packetCounter << std::endl;
-			packetSend << s << packetCounter;
-			socket.send(packetSend);
-			packetCounter++;
+			packet >> clientID >> s >> opponentIp >> opponentPort;
+			if (s == "clientready")
+			{
+				socket.disconnect();
+				this->_data->machine.AddState(StateRef(new PlayState(tempSpriteID, clientID, _data)), true);
+			}
+			else
+			{
+				std::cout << clientID << s << packetCounter << opponentIp << opponentPort << std::endl;
+				packetS << clientID << s << packetCounter;
+				socket.send(packetS);
+				packetCounter++;
+			}
+
 		}
 	}
 }

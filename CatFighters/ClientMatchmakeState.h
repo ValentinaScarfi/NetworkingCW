@@ -48,6 +48,6 @@ private:
 
 	sf::Socket::Status status;
 	int packetCounter = 0;
-
+	int clientID;
 };
 

@@ -8,7 +8,7 @@
 class PlayState : public State
 {
 public:
-	PlayState(int playerSprite, GameDataRef data);
+	PlayState(int playerSprite, int playerID, GameDataRef data);
 	~PlayState() { delete player; }
 
 	void Init();
@@ -25,6 +25,7 @@ private:
 	Player *player;
 
 	int spriteID;
+	int playerID;
 
 	sf::Clock clock;
 

@@ -3,7 +3,7 @@
 #include <iostream>
 
 
-PlayerSheet::PlayerSheet()
+PlayerSheet::PlayerSheet(int spriteID)
 {
 	
 }
@@ -26,22 +26,15 @@ void PlayerSheet::Animate(float dt, int columns, int rows)
 	{
 		xAnim++;
 
-		switch (xAnim)
+		if (xAnim == (columns + 1))
 		{
-		case 1: 
-			playerIdleSource.left = 0.0f;
-			break;
-		case 2:
-			playerIdleSource.left = frameSize.x;
-			break;
-		case 3:
-			playerIdleSource.left = frameSize.x * 2;
-			break;
-		case 4:
 			moveY = !moveY;
 			playerIdleSource.left = 0.0f;
 			xAnim = 1;
-			break;
+		}
+		else
+		{
+			playerIdleSource.left = frameSize.x * (xAnim - 2);
 		}
 
 		switch (moveY)
@@ -53,7 +46,6 @@ void PlayerSheet::Animate(float dt, int columns, int rows)
 			playerIdleSource.top = 0.0f;
 			break;
 		}
-				
 		
 		activeSprite.setTextureRect(playerIdleSource);
 		animationAccumulator = 0;
@@ -62,8 +54,12 @@ void PlayerSheet::Animate(float dt, int columns, int rows)
 	
 }
 
-void PlayerSheet::loadSprite(int columns, int rows)
+void PlayerSheet::loadSprite(int columns, int rows, bool secondPlayer)
 {
+
+	this->columns = columns;
+	this->rows = rows;
+
 	//player sprite
 	std::string textureName = "Simba Idle";
 	asset.LoadTexture(textureName, PLAYER_SPRITE_SIMBA_IDLE);
@@ -72,10 +68,18 @@ void PlayerSheet::loadSprite(int columns, int rows)
 	frameSize = sf::Vector2i(current.getSize().x / columns, current.getSize().y / rows);
 	playerIdleSource = sf::IntRect(0, 0, frameSize.x, frameSize.y);
 	idle.setTextureRect(playerIdleSource);
-	idle.setScale(2.0f, 2.0f);
-	idle.setPosition(170, 400);
+	if (secondPlayer)
+	{
+		idle.setScale(-2.0f, 2.0f);
+		idle.setPosition(1000, 400);
+	}
+	else
+	{
+		idle.setScale(2.0f, 2.0f);
+		idle.setPosition(170, 400);
+	}
+
 	idle.setOrigin(idle.getLocalBounds().width / 2, 0);
 
-	std::cout << idle.getPosition().y;
 	activeSprite = idle;
 }
