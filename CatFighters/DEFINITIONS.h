@@ -23,7 +23,17 @@
 
 #define PLAYER_SPRITE_SIMBA_IDLE "Resources/res/Game/idleSimbaSheet.png"
 
+#define PLAYER_SPRITE_SIMBA_JUMPAIR "Resources/res/Game/jumpAirSimbaSheet.png"
+
+#define PLAYER_SPRITE_SIMBA_JUMPFALL "Resources/res/Game/jumpFallSimbaSheet.png"
+
 #define PLAYER_SPRITE_GIGIO_IDLE "Resources/res/Game/idleGigioSheet.png"
+
+#define PLAYER_SPRITE_PEPPER_IDLE "Resources/res/Game/idlePepperSheet.png"
+
+#define PLAYER_SPRITE_PEPPER_JUMPAIR "Resources/res/Game/jumpAirPepperSheet.png"
+
+#define PLAYER_SPRITE_PEPPER_JUMPFALL "Resources/res/Game/jumpFallPepperSheet.png"
 
 #define BACKGROUND_GAME "Resources/res/Game/field.png"
 

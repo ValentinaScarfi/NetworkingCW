@@ -2,6 +2,16 @@
 #include "AssetManager.h"
 #include "DEFINITIONS.h"
 
+struct SpriteSheet
+{
+	sf::Sprite sprite;
+	sf::IntRect spriteRect;
+	sf::Vector2i frameSize;
+	int columns;
+	int rows;
+	int animationSpeed; //the lower, the faster
+};
+
 class PlayerSheet
 {
 public:
@@ -9,24 +19,33 @@ public:
 	~PlayerSheet();
 
 	void Draw(sf::RenderWindow &window);
+	void Animate();
+	void loadSprite(bool secondPlayer = false);
+	void animationMachine();
 
-	void Animate(float dt, int columns, int rows);
+	bool isJumping = false;
+	bool isFalling = false;
+	bool isAttacking = false;
 
-	void loadSprite(int columns, int rows, bool secondPlayer = false);
+	SpriteSheet activeSprite;
 
-	int columns;
-	int rows;
+private:
 
-	sf::IntRect playerIdleSource;
-	sf::Vector2i frameSize;
+	void setSheetAttributes(sf::Texture &textureSheet, SpriteSheet &sheet, int animationSpeed, int columns, int rows);
+
 	int animationAccumulator = 0;
-
 	int xAnim = 1;
+
 	bool moveY = false;
-	
+
+
 	AssetManager asset;
 
-	sf::Sprite activeSprite;
-	sf::Sprite idle;
+	SpriteSheet idle;
+	SpriteSheet jumpAir;
+	SpriteSheet jumpFall;
+	SpriteSheet attack;
 };
+
+
 

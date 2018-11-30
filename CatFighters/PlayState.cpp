@@ -23,23 +23,23 @@ void PlayState::Init()
 	//Border of health bar
 	this->_data->assets.LoadTexture("Health Border", HEALTH_BORDER);
 	healthBorder.setTexture(this->_data->assets.GetTexture("Health Border"));
-	this->healthBorder.setScale(0.4f, 0.4f);
+	this->healthBorder.setScale(0.4f, 0.7f);
 	this->healthBorder.setPosition(healthBarX, (50 - (this->healthBorder.getGlobalBounds().height / 2)));
 
 	//health bar
 	this->_data->assets.LoadTexture("Health Bar", HEALTH_BAR);
 	healthBar.setTexture(this->_data->assets.GetTexture("Health Bar"));
-	this->healthBar.setScale(0.4f, 0.4f);
+	this->healthBar.setScale(0.4f, 0.7f);
 	this->originalHealthScale = this->healthBar.getScale();
 	this->healthBar.setPosition(healthBarX, (50 - (this->healthBar.getGlobalBounds().height / 2)));
 
 	if (playerID == 2)
 	{
-		player->mySprite.loadSprite(3, 2, true);
+		player->mySprite.loadSprite(true);
 	}
 	else 
 	{
-		player->mySprite.loadSprite(3, 2);
+		player->mySprite.loadSprite();
 	}
 	
 }
@@ -66,7 +66,7 @@ void PlayState::HandleInput()
 
 void PlayState::Update(float dt)
 {
-	player->mySprite.Animate(dt, 3, 2);
+	player->mySprite.Animate();
 	player->windowSize = this->_data->window.getView().getSize().x;
 
 	if (this->_data->input.isAxisKeyPressed(sf::Keyboard::D))
@@ -86,20 +86,68 @@ void PlayState::Update(float dt)
 	{
 		this->player->canJump = false;
 		this->player->jump(dt);
+		//this->player->mySprite.isJumping = true;
 	}
 
-	this->player->mySprite.activeSprite.move(this->player->velocity * dt);
+	this->player->mySprite.activeSprite.sprite.move(this->player->velocity * dt);
 
-	if (this->player->mySprite.activeSprite.getPosition().y < 400)
+	if (this->player->mySprite.activeSprite.sprite.getPosition().y < 400.0f)
 	{
 		this->player->velocity.y += GRAVITY * dt;
-		this->player->mySprite.activeSprite.move(this->player->velocity * dt);
+		this->player->mySprite.activeSprite.sprite.move(this->player->velocity * dt);
+		//this->player->mySprite.isFalling = true;
+		//this->player->mySprite.isJumping = false;
 	}
-	else
+	else if (this->player->mySprite.activeSprite.sprite.getPosition().y >= 400.0f)
 	{
+		this->player->mySprite.activeSprite.sprite.setPosition(this->player->mySprite.activeSprite.sprite.getPosition().x, 400.0f);
 		this->player->velocity.y = 0.0f;
 		this->player->canJump = true;
 	}
+	//else if (this->player->mySprite.activeSprite.sprite.getPosition().y == 400.0f)
+	//{
+	//	this->player->velocity.y = 0.0f;
+	//	this->player->canJump = true;
+	//	//this->player->mySprite.isFalling = false;
+	//	//this->player->mySprite.isJumping = false;
+	//}
+
+	//Animation Machine
+	if (this->player->velocity.y == 0.0f)
+	{
+		this->player->isFalling = false;
+		this->player->isJumping = false;
+		if (this->player->isFalling != this->player->mySprite.isFalling || this->player->isJumping != this->player->mySprite.isJumping)
+		{
+			this->player->mySprite.isFalling = false;
+			this->player->mySprite.isJumping = false;
+			this->player->mySprite.animationMachine();
+		}
+	}
+	else if (this->player->velocity.y < 0.0f)
+	{
+		this->player->isFalling = false;
+		this->player->isJumping = true;
+		if (this->player->isFalling != this->player->mySprite.isFalling || this->player->isJumping != this->player->mySprite.isJumping)
+		{
+			this->player->mySprite.isFalling = false;
+			this->player->mySprite.isJumping = true;
+			this->player->mySprite.animationMachine();
+		}
+	}
+	else if (this->player->velocity.y > 0.0f)
+	{
+		this->player->isFalling = true;
+		this->player->isJumping = false;
+		if (this->player->isFalling != this->player->mySprite.isFalling || this->player->isJumping != this->player->mySprite.isJumping)
+		{
+			this->player->mySprite.isFalling = true;
+			this->player->mySprite.isJumping = false;
+			this->player->mySprite.animationMachine();
+		}
+	}
+
+	//std::cout << this->player->mySprite.activeSprite.sprite.getPosition().y << std::endl;
 
 	//send and receive updates
 }

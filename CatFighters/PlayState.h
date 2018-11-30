@@ -9,12 +9,15 @@ class PlayState : public State
 {
 public:
 	PlayState(int playerSprite, int playerID, GameDataRef data);
+
 	~PlayState() { delete player; }
 
 	void Init();
 	void HandleInput();
 	void Update(float dt);
 	void Draw(float dt);
+
+
 
 private:
 

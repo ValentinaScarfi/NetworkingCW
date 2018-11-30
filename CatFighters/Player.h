@@ -6,6 +6,7 @@ class Player
 {
 public:
 	Player(int playerSpriteID);
+
 	~Player();
 
 	int health = 100;
@@ -21,6 +22,9 @@ public:
 	void moveLeft(float dt);
 	void moveRight(float dt);
 	void jump(float dt);
+
+	bool isFalling = false;
+	bool isJumping = false;
 
 	bool canJump = true;
 	sf::Vector2f velocity;

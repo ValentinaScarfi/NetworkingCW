@@ -26,18 +26,18 @@ void Player::moveLeft(float dt)
 	velocity.x = 0.0f;
 
 
-	if (mySprite.activeSprite.getPosition().x <= left)
+	if (mySprite.activeSprite.sprite.getPosition().x <= left)
 	{
-		mySprite.activeSprite.setPosition(left, mySprite.activeSprite.getPosition().y);
+		mySprite.activeSprite.sprite.setPosition(left, mySprite.activeSprite.sprite.getPosition().y);
 	}
 	else
 	{
 		velocity.x -= speed;
 	}
 
-	if (mySprite.activeSprite.getScale().x > 0)
+	if (mySprite.activeSprite.sprite.getScale().x > 0)
 	{
-		mySprite.activeSprite.setScale(mySprite.activeSprite.getScale().x * -1.0f, mySprite.activeSprite.getScale().y);
+		mySprite.activeSprite.sprite.setScale(mySprite.activeSprite.sprite.getScale().x * -1.0f, mySprite.activeSprite.sprite.getScale().y);
 	}
 	
 }
@@ -48,18 +48,18 @@ void Player::moveRight(float dt)
 
 	velocity.x = 0.0f;
 
-	if (mySprite.activeSprite.getPosition().x >= right)
+	if (mySprite.activeSprite.sprite.getPosition().x >= right)
 	{
-		mySprite.activeSprite.setPosition(right, mySprite.activeSprite.getPosition().y);
+		mySprite.activeSprite.sprite.setPosition(right, mySprite.activeSprite.sprite.getPosition().y);
 	}
 	else
 	{
 		velocity.x += speed;
 	}
 
-	if (mySprite.activeSprite.getScale().x < 0)
+	if (mySprite.activeSprite.sprite.getScale().x < 0)
 	{
-		mySprite.activeSprite.setScale(mySprite.activeSprite.getScale().x * -1.0f, mySprite.activeSprite.getScale().y);
+		mySprite.activeSprite.sprite.setScale(mySprite.activeSprite.sprite.getScale().x * -1.0f, mySprite.activeSprite.sprite.getScale().y);
 	}
 }
 
@@ -69,6 +69,4 @@ void Player::jump(float dt)
 	// square root (2.0f * gravity * jumpHeight)
 
 	velocity.y = -sqrtf(2.0f * GRAVITY * jumpHeight);
-	
-	std::cout << velocity.y << "\n";
 }

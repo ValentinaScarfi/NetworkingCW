@@ -1,6 +1,7 @@
 ﻿  CatFightersServer.cpp
 c:\networking_cw\networkingcw\catfightersserver\catfightersserver.cpp(130): warning C4244: '=': conversion from 'sf::Int64' to 'float', possible loss of data
-c:\networking_cw\networkingcw\catfightersserver\catfightersserver.cpp(184): warning C4018: '<': signed/unsigned mismatch
+c:\networking_cw\networkingcw\catfightersserver\catfightersserver.cpp(199): warning C4018: '<': signed/unsigned mismatch
+c:\networking_cw\networkingcw\catfightersserver\catfightersserver.cpp(236): warning C4018: '<': signed/unsigned mismatch
 c:\networking_cw\networkingcw\catfightersserver\catfightersserver.cpp(45): warning C4101: 'dummy': unreferenced local variable
 c:\networking_cw\networkingcw\catfightersserver\catfightersserver.cpp(44): warning C4101: 'received': unreferenced local variable
   CatFightersServer.vcxproj -> C:\Networking_CW\NetworkingCW\CatFightersServer\Debug\CatFightersServer.exe
