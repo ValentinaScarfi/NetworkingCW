@@ -18,5 +18,6 @@ public:
 	bool isAxisKeyPressed(sf::Keyboard::Key key);
 
 private:
+	bool keyState = false;
 };
 

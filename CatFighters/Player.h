@@ -2,6 +2,14 @@
 #include <SFML/Graphics.hpp>
 #include "PlayerSheet.h"
 
+struct PlayerInfo
+{
+	int playerID;
+	int spriteID;
+	int health;
+	sf::Vector2f playerPos;
+};
+
 class Player
 {
 public:
@@ -13,7 +21,7 @@ public:
 	float speed = 700.0f;
 	int spriteID;
 
-	void getDamage();
+	void getDamage(sf::Sprite &health, sf::Vector2f originalHealthScale);
 
 	PlayerSheet mySprite;
 
@@ -23,10 +31,14 @@ public:
 	void moveRight(float dt);
 	void jump(float dt);
 
+	bool checkCollision(sf::Sprite boundsOpponent);
+
 	bool isFalling = false;
 	bool isJumping = false;
-
+	bool isAttacking = false;
+	bool canAttack = true;
 	bool canJump = true;
+
 	sf::Vector2f velocity;
 
 private:
@@ -35,5 +47,7 @@ private:
 	float jumpHeight = 150;
 
 	float groundFloor;
+
+	float calculatePercentage(float baseNumber, int percentage);
 };
 

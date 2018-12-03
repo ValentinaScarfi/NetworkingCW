@@ -40,6 +40,10 @@ private:
 	std::string portString = "";
 	sf::RectangleShape textBoxPort;
 
+	std::string opponentIp;
+	unsigned short myPort;
+	unsigned short opponentPort;
+	int opponentSpriteID;
 	
 	bool isIPFocus = false;
 	bool isPortFocus = false;

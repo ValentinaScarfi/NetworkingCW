@@ -40,8 +40,6 @@ bool InputManager::isShapeClicked(sf::RectangleShape object, sf::Event event, sf
 
 bool InputManager::isActionKeyPressed(sf::Event event, sf::Keyboard::Key key)
 {
-	bool keyState = false;
-
 	if (event.type == sf::Event::KeyPressed)
 	{
 		if (event.key.code == key && !keyState)
@@ -50,7 +48,7 @@ bool InputManager::isActionKeyPressed(sf::Event event, sf::Keyboard::Key key)
 			keyState = true;
 		}
 	}
-	if (event.type == sf::Event::KeyReleased)
+	else if (event.type == sf::Event::KeyReleased)
 	{
 		if (event.key.code == key && keyState)
 		{

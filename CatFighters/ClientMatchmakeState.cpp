@@ -171,8 +171,7 @@ void ClientMatchmakeState::Update(float dt)
 {
 	sf::Packet packet;
 	sf::Packet packetS;
-	std::string opponentIp;
-	unsigned short opponentPort;
+
 	std::string s;
 
 	if (isInLobby)
@@ -193,16 +192,16 @@ void ClientMatchmakeState::Update(float dt)
 		}
 		else
 		{
-			packet >> clientID >> s >> opponentIp >> opponentPort;
+			packet >> clientID >> s >> opponentIp >> opponentPort >> myPort >> opponentSpriteID;
 			if (s == "clientready")
 			{
 				socket.disconnect();
-				this->_data->machine.AddState(StateRef(new PlayState(tempSpriteID, clientID, _data)), true);
+				this->_data->machine.AddState(StateRef(new PlayState(tempSpriteID, clientID, opponentIp, opponentPort, opponentSpriteID, myPort, _data)), true);
 			}
 			else
 			{
-				std::cout << clientID << s << packetCounter << opponentIp << opponentPort << std::endl;
-				packetS << clientID << s << packetCounter;
+				std::cout << clientID << s << packetCounter << opponentIp << opponentPort << opponentSpriteID << std::endl;
+				packetS << clientID << s << packetCounter << tempSpriteID;
 				socket.send(packetS);
 				packetCounter++;
 			}

@@ -13,9 +13,19 @@ Player::~Player()
 {
 }
 
-void Player::getDamage()
+
+float Player::calculatePercentage(float baseNumber, int percentage)
 {
-	this->health -= 1;
+	return (baseNumber * percentage) / 100.0f;
+}
+
+void Player::getDamage(sf::Sprite &health, sf::Vector2f originalHealthScale)
+{
+	if (this->health > 0)
+	{
+		this->health -= 1;
+		health.setScale(calculatePercentage(originalHealthScale.x, this->health), health.getScale().y);
+	}
 }
 
 void Player::moveLeft(float dt)
@@ -66,7 +76,18 @@ void Player::moveRight(float dt)
 void Player::jump(float dt)
 {
 
-	// square root (2.0f * gravity * jumpHeight)
-
+	// formula -> square root (2.0f * gravity * jumpHeight)
 	velocity.y = -sqrtf(2.0f * GRAVITY * jumpHeight);
+}
+
+bool Player::checkCollision(sf::Sprite boundsOpponent)
+{
+	if (this->mySprite.activeSprite.sprite.getGlobalBounds().intersects(boundsOpponent.getGlobalBounds()))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }

@@ -19,16 +19,19 @@ PlayerSheet::PlayerSheet(int spriteID)
 		std::string jumpAirTexture = "Simba JumpAir";
 		asset.LoadTexture(jumpAirTexture, PLAYER_SPRITE_SIMBA_JUMPAIR);
 		sf::Texture &jumpAirText = asset.GetTexture(jumpAirTexture);
-		setSheetAttributes(jumpAirText, jumpAir, 10, 2, 2);
+		setSheetAttributes(jumpAirText, jumpAir, 7, 2, 2);
 
 		//jump fall
 		std::string jumpFallTexture = "Simba JumpFall";
 		asset.LoadTexture(jumpFallTexture, PLAYER_SPRITE_SIMBA_JUMPFALL);
 		sf::Texture &jumpFallText = asset.GetTexture(jumpFallTexture);
-		setSheetAttributes(jumpFallText, jumpFall, 7, 2, 2);
+		setSheetAttributes(jumpFallText, jumpFall, 8, 2, 2);
 
 		//attack
-
+		std::string attackTexture = "Simba Attack";
+		asset.LoadTexture(attackTexture, PLAYER_SPRITE_SIMBA_ATTACK);
+		sf::Texture &attackText = asset.GetTexture(attackTexture);
+		setSheetAttributes(attackText, attack, 6, 2, 2);
 		
 	}
 		break;
@@ -44,7 +47,7 @@ PlayerSheet::PlayerSheet(int spriteID)
 		std::string jumpAirTexture = "Pepper JumpAir";
 		asset.LoadTexture(jumpAirTexture, PLAYER_SPRITE_PEPPER_JUMPAIR);
 		sf::Texture &jumpAirText = asset.GetTexture(jumpAirTexture);
-		setSheetAttributes(jumpAirText, jumpAir, 10, 2, 2);
+		setSheetAttributes(jumpAirText, jumpAir, 7, 2, 2);
 
 		//jump fall
 		std::string jumpFallTexture = "Pepper JumpFall";
@@ -65,8 +68,16 @@ PlayerSheet::PlayerSheet(int spriteID)
 		setSheetAttributes(idleText, idle, 10, 2, 2);
 
 		//jump air
+		std::string jumpAirTexture = "Gigio JumpAir";
+		asset.LoadTexture(jumpAirTexture, PLAYER_SPRITE_GIGIO_JUMPAIR);
+		sf::Texture &jumpAirText = asset.GetTexture(jumpAirTexture);
+		setSheetAttributes(jumpAirText, jumpAir, 7, 2, 2);
 
 		//jump fall
+		std::string jumpFallTexture = "Gigio JumpFall";
+		asset.LoadTexture(jumpFallTexture, PLAYER_SPRITE_GIGIO_JUMPFALL);
+		sf::Texture &jumpFallText = asset.GetTexture(jumpFallTexture);
+		setSheetAttributes(jumpFallText, jumpFall, 7, 2, 2);
 
 		//attack
 
@@ -101,10 +112,12 @@ void PlayerSheet::Animate()
 			moveY = !moveY;
 			activeSprite.spriteRect.left = 0.0f;
 			xAnim = 1;
+			isAnimationEnded = true;
 		}
 		else
 		{
 			activeSprite.spriteRect.left = activeSprite.frameSize.x * (xAnim - 2);
+			isAnimationEnded = false;
 		}
 
 		switch (moveY)
@@ -142,6 +155,12 @@ void PlayerSheet::animationMachine()
 		activeSprite = idle;
 		//std::cout << "Idle" << std::endl;
 	}
+	else if (!isJumping && !isFalling && isAttacking)
+	{
+		attack.sprite.setScale(activeSprite.sprite.getScale());
+		attack.sprite.setPosition(activeSprite.sprite.getPosition());
+		activeSprite = attack;
+	}
 	else if (isJumping && !isFalling && !isAttacking)
 	{
 		jumpAir.sprite.setScale(activeSprite.sprite.getScale());
@@ -175,11 +194,12 @@ void PlayerSheet::setSheetAttributes(sf::Texture & textureSheet, SpriteSheet &sh
 	sheet.rows = rows;
 	sheet.sprite.setTexture(textureSheet);
 	sheet.frameSize = sf::Vector2i(textureSheet.getSize().x / columns, textureSheet.getSize().y / sheet.rows);
-	sheet.spriteRect = sf::IntRect(0, 0, sheet.frameSize.x, sheet.frameSize.y);
-	sheet.sprite.setTextureRect(sheet.spriteRect);
 
 	sheet.sprite.setScale(2.0f, 2.0f);
 	sheet.sprite.setPosition(170, 400);	
+
+	sheet.spriteRect = sf::IntRect(0, 0, sheet.frameSize.x, sheet.frameSize.y);
+	sheet.sprite.setTextureRect(sheet.spriteRect);
 
 	sheet.sprite.setOrigin(sheet.sprite.getLocalBounds().width / 2, 0);
 

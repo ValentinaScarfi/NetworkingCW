@@ -27,6 +27,8 @@ public:
 	bool isFalling = false;
 	bool isAttacking = false;
 
+	bool isAnimationEnded = false;
+
 	SpriteSheet activeSprite;
 
 private:

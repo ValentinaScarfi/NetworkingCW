@@ -2,12 +2,13 @@
 #include "PlayState.h"
 #include <iostream>
 
-PlayState::PlayState(int playerSprite, int playerID, GameDataRef data) : _data(data)
+PlayState::PlayState(int playerSprite, int playerID, std::string opponentIP, unsigned short oppPort, int oppSpriteID, unsigned short myPort, GameDataRef data) : _data(data), server(myPort), client(opponentIP, oppPort)
 {
 	this->spriteID = playerSprite;
 	this->playerID = playerID;
 	std::cout << "\n" << this->playerID << std::endl;
 	player = new Player(playerSprite);
+	playerOpponent = new Player(oppSpriteID);
 }
 
 void PlayState::Init()
@@ -16,15 +17,22 @@ void PlayState::Init()
 	background.setTexture(this->_data->assets.GetTexture("Game Background"));
 
 	int healthBarX = 50.f;
+	int healthBarXOpp = 900.f;
+
 	if (playerID == 2)
 	{
 		healthBarX = 900;
+		healthBarXOpp = 50.f;
 	}
 	//Border of health bar
 	this->_data->assets.LoadTexture("Health Border", HEALTH_BORDER);
 	healthBorder.setTexture(this->_data->assets.GetTexture("Health Border"));
 	this->healthBorder.setScale(0.4f, 0.7f);
 	this->healthBorder.setPosition(healthBarX, (50 - (this->healthBorder.getGlobalBounds().height / 2)));
+
+	//Border of opponent health bar
+	this->healthBorderOpponent = healthBorder;
+	this->healthBorderOpponent.setPosition(healthBarXOpp, (50 - (this->healthBorderOpponent.getGlobalBounds().height / 2)));
 
 	//health bar
 	this->_data->assets.LoadTexture("Health Bar", HEALTH_BAR);
@@ -33,14 +41,26 @@ void PlayState::Init()
 	this->originalHealthScale = this->healthBar.getScale();
 	this->healthBar.setPosition(healthBarX, (50 - (this->healthBar.getGlobalBounds().height / 2)));
 
+	//opponent health bar
+	healthBarOpponent = healthBar;
+	this->healthBarOpponent.setPosition(healthBarXOpp, (50 - (this->healthBarOpponent.getGlobalBounds().height / 2)));
+
+
 	if (playerID == 2)
 	{
 		player->mySprite.loadSprite(true);
+		playerOpponent->mySprite.loadSprite();
+
+		//client.connectToServerPeer();
 	}
 	else 
 	{
 		player->mySprite.loadSprite();
+		playerOpponent->mySprite.loadSprite(true);
+
+		//server.acceptPeer();
 	}
+	
 	
 }
 
@@ -55,20 +75,36 @@ void PlayState::HandleInput()
 			this->_data->window.close();
 		}
 
-		if (this->_data->input.isActionKeyPressed(event, sf::Keyboard::H))
+		if (this->_data->input.isActionKeyPressed(event, sf::Keyboard::G))
 		{
-			this->player->getDamage();
-			healthBar.setScale(calculatePercentage(originalHealthScale.x, player->health), healthBar.getScale().y);
+			this->player->isAttacking = true;
+			if (this->player->checkCollision(playerOpponent->mySprite.activeSprite.sprite))
+			{
+				playerOpponent->getDamage(healthBarOpponent, originalHealthScale);
+			}
 		}
-
 	}
+
 }
 
 void PlayState::Update(float dt)
 {
+	//if (playerID == 2)
+	//{
+	//	client.connectToServerPeer();
+	//}
+	//else
+	//{
+	//	server.acceptPeer();
+	//}
+	//Animate and window boundaries
 	player->mySprite.Animate();
 	player->windowSize = this->_data->window.getView().getSize().x;
 
+	playerOpponent->mySprite.Animate();
+	playerOpponent->windowSize = this->_data->window.getView().getSize().x;
+
+	//input for movement
 	if (this->_data->input.isAxisKeyPressed(sf::Keyboard::D))
 	{
 		this->player->moveRight(dt);
@@ -82,21 +118,21 @@ void PlayState::Update(float dt)
 		this->player->velocity.x = 0.0f;
 	}
 
+	//Jump
 	if (this->_data->input.isAxisKeyPressed(sf::Keyboard::Space) && this->player->canJump)
 	{
 		this->player->canJump = false;
 		this->player->jump(dt);
-		//this->player->mySprite.isJumping = true;
 	}
 
+	//move sprite to updated position
 	this->player->mySprite.activeSprite.sprite.move(this->player->velocity * dt);
 
+	//apply gravity
 	if (this->player->mySprite.activeSprite.sprite.getPosition().y < 400.0f)
 	{
 		this->player->velocity.y += GRAVITY * dt;
 		this->player->mySprite.activeSprite.sprite.move(this->player->velocity * dt);
-		//this->player->mySprite.isFalling = true;
-		//this->player->mySprite.isJumping = false;
 	}
 	else if (this->player->mySprite.activeSprite.sprite.getPosition().y >= 400.0f)
 	{
@@ -104,80 +140,89 @@ void PlayState::Update(float dt)
 		this->player->velocity.y = 0.0f;
 		this->player->canJump = true;
 	}
-	//else if (this->player->mySprite.activeSprite.sprite.getPosition().y == 400.0f)
-	//{
-	//	this->player->velocity.y = 0.0f;
-	//	this->player->canJump = true;
-	//	//this->player->mySprite.isFalling = false;
-	//	//this->player->mySprite.isJumping = false;
-	//}
 
-	//Animation Machine
-	if (this->player->velocity.y == 0.0f)
-	{
-		this->player->isFalling = false;
-		this->player->isJumping = false;
-		if (this->player->isFalling != this->player->mySprite.isFalling || this->player->isJumping != this->player->mySprite.isJumping)
-		{
-			this->player->mySprite.isFalling = false;
-			this->player->mySprite.isJumping = false;
-			this->player->mySprite.animationMachine();
-		}
-	}
-	else if (this->player->velocity.y < 0.0f)
-	{
-		this->player->isFalling = false;
-		this->player->isJumping = true;
-		if (this->player->isFalling != this->player->mySprite.isFalling || this->player->isJumping != this->player->mySprite.isJumping)
-		{
-			this->player->mySprite.isFalling = false;
-			this->player->mySprite.isJumping = true;
-			this->player->mySprite.animationMachine();
-		}
-	}
-	else if (this->player->velocity.y > 0.0f)
-	{
-		this->player->isFalling = true;
-		this->player->isJumping = false;
-		if (this->player->isFalling != this->player->mySprite.isFalling || this->player->isJumping != this->player->mySprite.isJumping)
-		{
-			this->player->mySprite.isFalling = true;
-			this->player->mySprite.isJumping = false;
-			this->player->mySprite.animationMachine();
-		}
-	}
+	updateAnimation(this->player);
 
-	//std::cout << this->player->mySprite.activeSprite.sprite.getPosition().y << std::endl;
+	//------send and receive updates client - server peer to peer
 
-	//send and receive updates
+
 }
 
 void PlayState::Draw(float dt)
 {
 	this->_data->window.clear();
 
-	switch (spriteID)
-	{
-	case 1:
-		this->_data->window.clear(sf::Color::Green);
-		break;
-	case 2:
-		this->_data->window.clear(sf::Color::Red);
-		break;
-	case 3:
-		this->_data->window.clear(sf::Color::Yellow);
-		break;
-	}
-
 	this->_data->window.draw(this->background);
 	this->_data->window.draw(this->healthBorder);
 	this->_data->window.draw(this->healthBar);
 	player->mySprite.Draw(this->_data->window);
 
+	//opponent
+	this->_data->window.draw(this->healthBorderOpponent);
+	this->_data->window.draw(this->healthBarOpponent);
+	playerOpponent->mySprite.Draw(this->_data->window);
+	
 	this->_data->window.display();
 }
 
-float PlayState::calculatePercentage(float baseNumber, int percentage)
+void PlayState::updateAnimation(Player *playerCurrent)
 {
-	return (baseNumber * percentage) / 100.0f;
+
+	if (playerCurrent->isAttacking)
+	{
+		attackAccumulator++;
+	}
+
+	if (attackAccumulator == 25)
+	{
+		playerCurrent->isAttacking = false;
+		attackAccumulator = 0;
+	}
+
+	if (playerCurrent->isAttacking)
+	{
+		if (playerCurrent->isAttacking != playerCurrent->mySprite.isAttacking)
+		{
+			playerCurrent->mySprite.isAttacking = true;
+			playerCurrent->mySprite.animationMachine();
+		}
+	}
+	//Animation Machine for jump
+	else if (playerCurrent->velocity.y == 0.0f && !playerCurrent->isAttacking)
+	{
+		playerCurrent->isFalling = false;
+		playerCurrent->isJumping = false;
+		if (playerCurrent->isFalling != playerCurrent->mySprite.isFalling || playerCurrent->isJumping != playerCurrent->mySprite.isJumping || playerCurrent->isAttacking != playerCurrent->mySprite.isAttacking)
+		{
+			playerCurrent->mySprite.isFalling = false;
+			playerCurrent->mySprite.isJumping = false;
+			playerCurrent->mySprite.isAttacking = false;
+			playerCurrent->mySprite.animationMachine();
+		}
+	}
+	else if (playerCurrent->velocity.y < 0.0f && !playerCurrent->isAttacking)
+	{
+		playerCurrent->isFalling = false;
+		playerCurrent->isJumping = true;
+		if (playerCurrent->isFalling != playerCurrent->mySprite.isFalling || playerCurrent->isJumping != playerCurrent->mySprite.isJumping || playerCurrent->isAttacking != playerCurrent->mySprite.isAttacking)
+		{
+			playerCurrent->mySprite.isFalling = false;
+			playerCurrent->mySprite.isJumping = true;
+			playerCurrent->mySprite.isAttacking = false;
+			playerCurrent->mySprite.animationMachine();
+		}
+	}
+	else if (playerCurrent->velocity.y > 0.0f && !playerCurrent->isAttacking)
+	{
+		playerCurrent->isFalling = true;
+		playerCurrent->isJumping = false;
+		if (playerCurrent->isFalling != playerCurrent->mySprite.isFalling || playerCurrent->isJumping != playerCurrent->mySprite.isJumping || playerCurrent->isAttacking != playerCurrent->mySprite.isAttacking)
+		{
+			playerCurrent->mySprite.isFalling = true;
+			playerCurrent->mySprite.isJumping = false;
+			playerCurrent->mySprite.isAttacking = false;
+			playerCurrent->mySprite.animationMachine();
+		}
+	}
 }
+
