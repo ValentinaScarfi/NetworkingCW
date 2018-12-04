@@ -4,8 +4,6 @@
 
 struct PlayerInfo
 {
-	int playerID;
-	int spriteID;
 	int health;
 	sf::Vector2f playerPos;
 };
@@ -22,8 +20,12 @@ public:
 	int spriteID;
 
 	void getDamage(sf::Sprite &health, sf::Vector2f originalHealthScale);
+	void updateMyInfo();
+	void retrieveMyNewInfo();
+
 
 	PlayerSheet mySprite;
+	PlayerInfo myInfo;
 
 	float windowSize;
 

@@ -28,6 +28,18 @@ void Player::getDamage(sf::Sprite &health, sf::Vector2f originalHealthScale)
 	}
 }
 
+void Player::updateMyInfo()
+{
+	this->myInfo.health = this->health;
+	this->myInfo.playerPos = this->mySprite.activeSprite.sprite.getPosition();
+}
+
+void Player::retrieveMyNewInfo()
+{
+	this->health = this->myInfo.health;
+	this->mySprite.activeSprite.sprite.setPosition(this->myInfo.playerPos);
+}
+
 void Player::moveLeft(float dt)
 {
 

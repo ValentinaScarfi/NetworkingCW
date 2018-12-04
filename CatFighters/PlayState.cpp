@@ -11,6 +11,17 @@ PlayState::PlayState(int playerSprite, int playerID, std::string opponentIP, uns
 	playerOpponent = new Player(oppSpriteID);
 }
 
+
+sf::Packet& operator <<(sf::Packet& packet, const PlayerInfo& player)
+{
+	return packet << player.health << player.playerPos.x << player.playerPos.y;
+}
+
+sf::Packet& operator >>(sf::Packet& packet, PlayerInfo& player)
+{
+	return packet >> player.health >> player.playerPos.x >> player.playerPos.y;
+}
+
 void PlayState::Init()
 {
 	this->_data->assets.LoadTexture("Game Background", BACKGROUND_GAME);
@@ -138,7 +149,15 @@ void PlayState::Update(float dt)
 	updateAnimation(this->player);
 
 	//------send and receive updates client - server peer to peer
+	this->player->updateMyInfo();
 
+	sPacket << this->player->myInfo;
+	client.sendPlayerData(sPacket);
+	server.receiveOpponentData(rPacket);
+	rPacket >> this->playerOpponent->myInfo;
+
+	this->playerOpponent->retrieveMyNewInfo();
+	//rPacket >> this->playerOpponent;
 
 }
 

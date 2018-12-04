@@ -28,6 +28,8 @@ private:
 	Server server;
 	Client client;
 
+	sf::Packet sPacket;
+	sf::Packet rPacket;
 
 	int spriteID;
 	int playerID;

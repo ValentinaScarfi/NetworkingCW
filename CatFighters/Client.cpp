@@ -25,3 +25,13 @@ void Client::connectToServerPeer()
 		std::cout << "Connected to server" << std::endl;
 	}
 }
+
+void Client::sendPlayerData(sf::Packet packet)
+{
+	sf::Socket::Status status = socket.send(packet);
+
+	if (status != sf::Socket::Done)
+	{
+		std::cout << "Can't send data to server" << std::endl;
+	}
+}
