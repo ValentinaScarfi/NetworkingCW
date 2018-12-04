@@ -5,8 +5,6 @@
 Server::Server(unsigned short myPort)
 {
 	this->myPort = myPort;
-	listener.setBlocking(false);
-	clientPeer.setBlocking(false);
 }
 
 
@@ -16,18 +14,24 @@ Server::~Server()
 
 void Server::listenToPeer()
 {
+	sf::Socket::Status status = listener.listen(this->myPort);
 
+	if (status != sf::Socket::Done)
+	{
+		std::cout << "Problems with the port" << std::endl;
+	}
 }
 
 void Server::acceptPeer()
 {
-	if (listener.listen(this->myPort) != sf::Socket::Done)
-	{
-		std::cout << "Problems with the port" << std::endl;
-	}
+	sf::Socket::Status status = listener.accept(clientPeer);
 
-	if (listener.accept(clientPeer) != sf::Socket::Done)
+	if (status != sf::Socket::Done)
 	{
 		std::cout << "Can't connect with peer client" << std::endl;
+	}
+	else
+	{
+		std::cout << "Client Connected" << std::endl;
 	}
 }

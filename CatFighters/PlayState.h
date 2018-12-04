@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <thread> 
 #include "State.h"
 #include "Game.h"
 #include "Player.h"
@@ -26,6 +27,7 @@ private:
 
 	Server server;
 	Client client;
+
 
 	int spriteID;
 	int playerID;

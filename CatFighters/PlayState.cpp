@@ -51,17 +51,19 @@ void PlayState::Init()
 		player->mySprite.loadSprite(true);
 		playerOpponent->mySprite.loadSprite();
 
-		//client.connectToServerPeer();
+		client.connectToServerPeer();
+		server.listenToPeer();
+		server.acceptPeer();
 	}
 	else 
 	{
 		player->mySprite.loadSprite();
 		playerOpponent->mySprite.loadSprite(true);
 
-		//server.acceptPeer();
+		server.listenToPeer();
+		server.acceptPeer();
+		client.connectToServerPeer();
 	}
-	
-	
 }
 
 void PlayState::HandleInput()
@@ -89,14 +91,6 @@ void PlayState::HandleInput()
 
 void PlayState::Update(float dt)
 {
-	//if (playerID == 2)
-	//{
-	//	client.connectToServerPeer();
-	//}
-	//else
-	//{
-	//	server.acceptPeer();
-	//}
 	//Animate and window boundaries
 	player->mySprite.Animate();
 	player->windowSize = this->_data->window.getView().getSize().x;

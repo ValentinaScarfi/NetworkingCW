@@ -6,7 +6,6 @@ Client::Client(std::string opponentIP, unsigned short oppPort)
 {
 	this->oppIP = opponentIP;
 	this->oppPort = oppPort;
-	socket.setBlocking(false);
 }
 
 
@@ -20,5 +19,9 @@ void Client::connectToServerPeer()
 	if (status != sf::Socket::Done)
 	{
 		std::cout << "Can't connect to peer server" << std::endl;
+	}
+	else 
+	{
+		std::cout << "Connected to server" << std::endl;
 	}
 }
