@@ -13,6 +13,16 @@ Client::~Client()
 {
 }
 
+sf::Packet& operator <<(sf::Packet& packet, const PlayerInfo& player)
+{
+	return packet << player.health << player.opponentHealth 
+		//<< player.isAttacking << player.isFalling << player.isJumping 
+		//<< player.isAnimAttacking << player.isAnimFalling << player.isAnimJumping
+		//<< player.accumultorAttack
+		//<< player.velocity.x << player.velocity.y
+		<< player.playerPos.x << player.playerPos.y;
+}
+
 void Client::connectToServerPeer()
 {
 	sf::Socket::Status status = socket.connect(oppIP, oppPort);
@@ -26,8 +36,10 @@ void Client::connectToServerPeer()
 	}
 }
 
-void Client::sendPlayerData(sf::Packet packet)
+void Client::sendPlayerData(sf::Packet packet, PlayerInfo &info)
 {
+	packet << info;
+
 	sf::Socket::Status status = socket.send(packet);
 
 	if (status != sf::Socket::Done)

@@ -11,7 +11,7 @@ public:
 
 	sf::TcpSocket socket;
 	void connectToServerPeer();
-	void sendPlayerData(sf::Packet packet);
+	void sendPlayerData(sf::Packet packet, PlayerInfo &info);
 
 private:
 

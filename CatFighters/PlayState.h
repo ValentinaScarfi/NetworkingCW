@@ -25,15 +25,20 @@ private:
 	Player *player;
 	Player *playerOpponent;
 
+	PlayerInfo tempOpponent;
+
 	Server server;
 	Client client;
+
+	//float calculatePercentage(float baseNumber, int percentage);
 
 	sf::Packet sPacket;
 	sf::Packet rPacket;
 
+	bool isWindowFocus = false;
+
 	int spriteID;
 	int playerID;
-	int attackAccumulator = 0;
 
 	sf::Clock clock;
 

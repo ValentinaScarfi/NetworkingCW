@@ -5,6 +5,19 @@
 struct PlayerInfo
 {
 	int health;
+	int opponentHealth;
+
+	bool isFalling;
+	bool isJumping;
+	bool isAttacking;
+
+	bool isAnimFalling;
+	bool isAnimJumping;
+	bool isAnimAttacking;
+
+	int accumultorAttack;
+
+	sf::Vector2f velocity;
 	sf::Vector2f playerPos;
 };
 
@@ -14,20 +27,22 @@ public:
 	Player(int playerSpriteID);
 
 	~Player();
-
+	
 	int health = 100;
 	float speed = 700.0f;
 	int spriteID;
 
-	void getDamage(sf::Sprite &health, sf::Vector2f originalHealthScale);
-	void updateMyInfo();
-	void retrieveMyNewInfo();
+	void getDamage();
+	void updateMyInfo(PlayerInfo &info, Player &opponent);
+	void retrieveMyNewInfo(PlayerInfo &info, Player &opponent);
 
+	void updateHealthBar(sf::Sprite &health, sf::Vector2f originalHealthScale);
 
 	PlayerSheet mySprite;
 	PlayerInfo myInfo;
 
 	float windowSize;
+	int attackAccumulator = 0;
 
 	void moveLeft(float dt);
 	void moveRight(float dt);

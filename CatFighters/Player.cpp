@@ -6,6 +6,24 @@ Player::Player(int playerSpriteID) : mySprite(playerSpriteID)
 {
 	groundFloor = 400.0f;
 	this->spriteID = playerSpriteID;
+	myInfo = PlayerInfo();
+	myInfo.health = this->health;
+	myInfo.opponentHealth = 100;
+
+	//myInfo.isAttacking = isAttacking;
+	//myInfo.isFalling = isFalling;
+	//myInfo.isJumping = isJumping;
+
+	//myInfo.isAnimAttacking = mySprite.isAttacking;
+	//myInfo.isAnimFalling = mySprite.isFalling;
+	//myInfo.isAnimJumping = mySprite.isJumping;
+
+	//myInfo.accumultorAttack = attackAccumulator;
+
+	//myInfo.velocity = this->velocity;
+
+	myInfo.playerPos.x = this->mySprite.activeSprite.sprite.getPosition().x;
+	myInfo.playerPos.y = this->mySprite.activeSprite.sprite.getPosition().y;
 }
 
 
@@ -13,31 +31,61 @@ Player::~Player()
 {
 }
 
-
 float Player::calculatePercentage(float baseNumber, int percentage)
 {
 	return (baseNumber * percentage) / 100.0f;
 }
 
-void Player::getDamage(sf::Sprite &health, sf::Vector2f originalHealthScale)
+void Player::getDamage()
 {
 	if (this->health > 0)
 	{
 		this->health -= 1;
-		health.setScale(calculatePercentage(originalHealthScale.x, this->health), health.getScale().y);
 	}
 }
 
-void Player::updateMyInfo()
+void Player::updateMyInfo(PlayerInfo &info, Player &opponent)
 {
-	this->myInfo.health = this->health;
-	this->myInfo.playerPos = this->mySprite.activeSprite.sprite.getPosition();
+	info.opponentHealth = opponent.health;
+
+	//info.isAttacking = this->isAttacking;
+	//info.isFalling = this->isFalling;
+	//info.isJumping = this->isJumping;
+	//
+	//info.isAnimAttacking = mySprite.isAttacking;
+	//info.isAnimFalling = mySprite.isFalling;
+	//info.isAnimJumping = mySprite.isJumping;
+
+	//info.accumultorAttack = this->attackAccumulator;
+
+	//info.velocity = this->velocity;
+
+	info.playerPos.x = this->mySprite.activeSprite.sprite.getPosition().x;
+	info.playerPos.y = this->mySprite.activeSprite.sprite.getPosition().y;
 }
 
-void Player::retrieveMyNewInfo()
+void Player::retrieveMyNewInfo(PlayerInfo &info, Player &opponent)
 {
-	this->health = this->myInfo.health;
-	this->mySprite.activeSprite.sprite.setPosition(this->myInfo.playerPos);
+	opponent.health = info.opponentHealth;
+
+	//isAttacking = info.isAttacking;
+	//isFalling = info.isFalling;
+	//isJumping = info.isJumping;
+
+	//mySprite.isAttacking = info.isAnimAttacking;
+	//mySprite.isFalling = info.isAnimFalling;
+	//mySprite.isJumping = info.isAnimJumping;
+
+	//attackAccumulator = info.accumultorAttack;
+
+	//velocity = info.velocity;
+
+	this->mySprite.activeSprite.sprite.setPosition(info.playerPos);
+}
+
+void Player::updateHealthBar(sf::Sprite &health, sf::Vector2f originalHealthScale)
+{
+	health.setScale(calculatePercentage(originalHealthScale.x, this->health), health.getScale().y);
 }
 
 void Player::moveLeft(float dt)

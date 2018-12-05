@@ -11,7 +11,7 @@ public:
 
 	void listenToPeer();
 	void acceptPeer();
-	void receiveOpponentData(sf::Packet packet);
+	void receiveOpponentData(sf::Packet packet, PlayerInfo &info);
 
 private:
 

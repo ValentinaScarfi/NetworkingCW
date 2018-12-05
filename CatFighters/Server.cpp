@@ -12,6 +12,15 @@ Server::~Server()
 {
 }
 
+sf::Packet& operator >>(sf::Packet& packet, PlayerInfo& player)
+{
+	return packet >> player.health >> player.opponentHealth 
+		//>> player.isAttacking >> player.isFalling >> player.isJumping 
+		//>> player.isAnimAttacking >> player.isAnimFalling >> player.isAnimJumping
+		//>> player.accumultorAttack
+		//>> player.velocity.x >> player.velocity.y
+		>> player.playerPos.x >> player.playerPos.y;
+}
 
 void Server::listenToPeer()
 {
@@ -37,7 +46,7 @@ void Server::acceptPeer()
 	}
 }
 
-void Server::receiveOpponentData(sf::Packet packet)
+void Server::receiveOpponentData(sf::Packet packet, PlayerInfo &info)
 {
 	sf::Socket::Status status = clientPeer.receive(packet);
 
@@ -45,9 +54,9 @@ void Server::receiveOpponentData(sf::Packet packet)
 	{
 		std::cout << "Can't receive data from client" << std::endl;
 	}
-	/*else
+	else
 	{
-		std::cout << "Received Data" << std::endl;
-	}*/
+		packet >> info;
+	}
 }
 

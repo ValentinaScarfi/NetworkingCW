@@ -11,17 +11,6 @@ PlayState::PlayState(int playerSprite, int playerID, std::string opponentIP, uns
 	playerOpponent = new Player(oppSpriteID);
 }
 
-
-sf::Packet& operator <<(sf::Packet& packet, const PlayerInfo& player)
-{
-	return packet << player.health << player.playerPos.x << player.playerPos.y;
-}
-
-sf::Packet& operator >>(sf::Packet& packet, PlayerInfo& player)
-{
-	return packet >> player.health >> player.playerPos.x >> player.playerPos.y;
-}
-
 void PlayState::Init()
 {
 	this->_data->assets.LoadTexture("Game Background", BACKGROUND_GAME);
@@ -77,6 +66,11 @@ void PlayState::Init()
 	}
 }
 
+//float PlayState::calculatePercentage(float baseNumber, int percentage)
+//{
+//	return (baseNumber * percentage) / 100.0f;
+//}
+
 void PlayState::HandleInput()
 {
 	sf::Event event;
@@ -93,8 +87,19 @@ void PlayState::HandleInput()
 			this->player->isAttacking = true;
 			if (this->player->checkCollision(playerOpponent->mySprite.activeSprite.sprite))
 			{
-				playerOpponent->getDamage(healthBarOpponent, originalHealthScale);
+				playerOpponent->getDamage();
+				
+				this->playerOpponent->updateHealthBar(healthBarOpponent, originalHealthScale);
 			}
+		}
+
+		if (event.type == sf::Event::LostFocus)
+		{
+			isWindowFocus = false;
+		}
+		else
+		{
+			isWindowFocus = true;
 		}
 	}
 
@@ -106,15 +111,12 @@ void PlayState::Update(float dt)
 	player->mySprite.Animate();
 	player->windowSize = this->_data->window.getView().getSize().x;
 
-	playerOpponent->mySprite.Animate();
-	playerOpponent->windowSize = this->_data->window.getView().getSize().x;
-
 	//input for movement
-	if (this->_data->input.isAxisKeyPressed(sf::Keyboard::D))
+	if (this->_data->input.isAxisKeyPressed(sf::Keyboard::D) && isWindowFocus)
 	{
 		this->player->moveRight(dt);
 	}
-	else if (this->_data->input.isAxisKeyPressed(sf::Keyboard::A))
+	else if (this->_data->input.isAxisKeyPressed(sf::Keyboard::A) && isWindowFocus)
 	{
 		this->player->moveLeft(dt);
 	}
@@ -124,7 +126,7 @@ void PlayState::Update(float dt)
 	}
 
 	//Jump
-	if (this->_data->input.isAxisKeyPressed(sf::Keyboard::Space) && this->player->canJump)
+	if (this->_data->input.isAxisKeyPressed(sf::Keyboard::Space) && this->player->canJump && isWindowFocus)
 	{
 		this->player->canJump = false;
 		this->player->jump(dt);
@@ -147,18 +149,22 @@ void PlayState::Update(float dt)
 	}
 
 	updateAnimation(this->player);
+	
 
 	//------send and receive updates client - server peer to peer
-	this->player->updateMyInfo();
+	this->player->updateMyInfo(this->player->myInfo, *playerOpponent);
 
-	sPacket << this->player->myInfo;
-	client.sendPlayerData(sPacket);
-	server.receiveOpponentData(rPacket);
-	rPacket >> this->playerOpponent->myInfo;
+	client.sendPlayerData(sPacket, this->player->myInfo);
+	server.receiveOpponentData(rPacket, tempOpponent);
 
-	this->playerOpponent->retrieveMyNewInfo();
-	//rPacket >> this->playerOpponent;
+	this->playerOpponent->retrieveMyNewInfo(tempOpponent, *player);
+	
+	updateAnimation(this->playerOpponent);
 
+	playerOpponent->mySprite.Animate();
+	playerOpponent->windowSize = this->_data->window.getView().getSize().x;
+
+	this->player->updateHealthBar(healthBar, originalHealthScale);
 }
 
 void PlayState::Draw(float dt)
@@ -183,13 +189,13 @@ void PlayState::updateAnimation(Player *playerCurrent)
 
 	if (playerCurrent->isAttacking)
 	{
-		attackAccumulator++;
+		playerCurrent->attackAccumulator++;
 	}
 
-	if (attackAccumulator == 25)
+	if (playerCurrent->attackAccumulator == 25)
 	{
 		playerCurrent->isAttacking = false;
-		attackAccumulator = 0;
+		playerCurrent->attackAccumulator = 0;
 	}
 
 	if (playerCurrent->isAttacking)
