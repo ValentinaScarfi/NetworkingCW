@@ -10,17 +10,16 @@ Player::Player(int playerSpriteID) : mySprite(playerSpriteID)
 	myInfo.health = this->health;
 	myInfo.opponentHealth = 100;
 
-	//myInfo.isAttacking = isAttacking;
-	//myInfo.isFalling = isFalling;
-	//myInfo.isJumping = isJumping;
+	myInfo.isAttacking = isAttacking;
+	myInfo.isFalling = isFalling;
+	myInfo.isJumping = isJumping;
 
-	//myInfo.isAnimAttacking = mySprite.isAttacking;
-	//myInfo.isAnimFalling = mySprite.isFalling;
-	//myInfo.isAnimJumping = mySprite.isJumping;
+	myInfo.scaleX = this->mySprite.activeSprite.sprite.getScale().x;
+	myInfo.scaleY = this->mySprite.activeSprite.sprite.getScale().y;
 
-	//myInfo.accumultorAttack = attackAccumulator;
+	myInfo.accumultorAttack = attackAccumulator;
 
-	//myInfo.velocity = this->velocity;
+	myInfo.velocity = this->velocity;
 
 	myInfo.playerPos.x = this->mySprite.activeSprite.sprite.getPosition().x;
 	myInfo.playerPos.y = this->mySprite.activeSprite.sprite.getPosition().y;
@@ -48,17 +47,16 @@ void Player::updateMyInfo(PlayerInfo &info, Player &opponent)
 {
 	info.opponentHealth = opponent.health;
 
-	//info.isAttacking = this->isAttacking;
-	//info.isFalling = this->isFalling;
-	//info.isJumping = this->isJumping;
-	//
-	//info.isAnimAttacking = mySprite.isAttacking;
-	//info.isAnimFalling = mySprite.isFalling;
-	//info.isAnimJumping = mySprite.isJumping;
+	info.isAttacking = this->isAttacking;
+	info.isFalling = this->isFalling;
+	info.isJumping = this->isJumping;
 
-	//info.accumultorAttack = this->attackAccumulator;
+	info.scaleX = this->mySprite.activeSprite.sprite.getScale().x;
+	info.scaleY = this->mySprite.activeSprite.sprite.getScale().y;
 
-	//info.velocity = this->velocity;
+	info.accumultorAttack = this->attackAccumulator;
+
+	info.velocity = this->velocity;
 
 	info.playerPos.x = this->mySprite.activeSprite.sprite.getPosition().x;
 	info.playerPos.y = this->mySprite.activeSprite.sprite.getPosition().y;
@@ -68,17 +66,15 @@ void Player::retrieveMyNewInfo(PlayerInfo &info, Player &opponent)
 {
 	opponent.health = info.opponentHealth;
 
-	//isAttacking = info.isAttacking;
-	//isFalling = info.isFalling;
-	//isJumping = info.isJumping;
+	isAttacking = info.isAttacking;
+	isFalling = info.isFalling;
+	isJumping = info.isJumping;
 
-	//mySprite.isAttacking = info.isAnimAttacking;
-	//mySprite.isFalling = info.isAnimFalling;
-	//mySprite.isJumping = info.isAnimJumping;
+	this->mySprite.activeSprite.sprite.setScale(info.scaleX, info.scaleY);
 
-	//attackAccumulator = info.accumultorAttack;
+	attackAccumulator = info.accumultorAttack;
 
-	//velocity = info.velocity;
+	velocity = info.velocity;
 
 	this->mySprite.activeSprite.sprite.setPosition(info.playerPos);
 }

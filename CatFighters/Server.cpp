@@ -15,10 +15,11 @@ Server::~Server()
 sf::Packet& operator >>(sf::Packet& packet, PlayerInfo& player)
 {
 	return packet >> player.health >> player.opponentHealth 
-		//>> player.isAttacking >> player.isFalling >> player.isJumping 
+		>> player.isAttacking >> player.isFalling >> player.isJumping 
 		//>> player.isAnimAttacking >> player.isAnimFalling >> player.isAnimJumping
-		//>> player.accumultorAttack
-		//>> player.velocity.x >> player.velocity.y
+		>> player.scaleX >> player.scaleY
+		>> player.accumultorAttack
+		>> player.velocity.x >> player.velocity.y
 		>> player.playerPos.x >> player.playerPos.y;
 }
 

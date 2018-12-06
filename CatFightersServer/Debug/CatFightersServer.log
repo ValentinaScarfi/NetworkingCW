@@ -1,7 +1,9 @@
-﻿  CatFightersServer.cpp
-c:\networking_cw\networkingcw\catfightersserver\catfightersserver.cpp(133): warning C4244: '=': conversion from 'sf::Int64' to 'float', possible loss of data
-c:\networking_cw\networkingcw\catfightersserver\catfightersserver.cpp(188): warning C4018: '<': signed/unsigned mismatch
-c:\networking_cw\networkingcw\catfightersserver\catfightersserver.cpp(208): warning C4018: '<': signed/unsigned mismatch
-c:\networking_cw\networkingcw\catfightersserver\catfightersserver.cpp(47): warning C4101: 'dummy': unreferenced local variable
-c:\networking_cw\networkingcw\catfightersserver\catfightersserver.cpp(46): warning C4101: 'received': unreferenced local variable
-  CatFightersServer.vcxproj -> C:\Networking_CW\NetworkingCW\CatFightersServer\Debug\CatFightersServer.exe
+﻿  stdafx.cpp
+  CatFightersServer.cpp
+c:\networkingcw\catfightersserver\catfightersserver.cpp(133): warning C4244: '=': conversion from 'sf::Int64' to 'float', possible loss of data
+c:\networkingcw\catfightersserver\catfightersserver.cpp(188): warning C4018: '<': signed/unsigned mismatch
+c:\networkingcw\catfightersserver\catfightersserver.cpp(208): warning C4018: '<': signed/unsigned mismatch
+c:\networkingcw\catfightersserver\catfightersserver.cpp(47): warning C4101: 'dummy': unreferenced local variable
+c:\networkingcw\catfightersserver\catfightersserver.cpp(46): warning C4101: 'received': unreferenced local variable
+  LINK : C:\NetworkingCW\CatFightersServer\Debug\CatFightersServer.exe not found or not built by the last incremental link; performing full link
+  CatFightersServer.vcxproj -> C:\NetworkingCW\CatFightersServer\Debug\CatFightersServer.exe

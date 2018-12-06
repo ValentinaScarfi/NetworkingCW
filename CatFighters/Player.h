@@ -11,11 +11,10 @@ struct PlayerInfo
 	bool isJumping;
 	bool isAttacking;
 
-	bool isAnimFalling;
-	bool isAnimJumping;
-	bool isAnimAttacking;
-
 	int accumultorAttack;
+
+	float scaleX;
+	float scaleY;
 
 	sf::Vector2f velocity;
 	sf::Vector2f playerPos;
