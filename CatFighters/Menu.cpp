@@ -42,7 +42,7 @@ void Menu::Update(float dt)
 
 }
 
-void Menu::Draw(float dt)
+void Menu::Draw()
 {
 	this->_data->window.clear();
 	this->_data->window.draw(this->background);

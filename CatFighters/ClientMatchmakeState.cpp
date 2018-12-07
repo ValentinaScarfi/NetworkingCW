@@ -210,7 +210,7 @@ void ClientMatchmakeState::Update(float dt)
 	}
 }
 
-void ClientMatchmakeState::Draw(float dt)
+void ClientMatchmakeState::Draw()
 {
 	this->_data->window.clear();
 

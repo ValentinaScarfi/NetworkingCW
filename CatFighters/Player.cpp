@@ -8,21 +8,13 @@ Player::Player(int playerSpriteID) : mySprite(playerSpriteID)
 	this->spriteID = playerSpriteID;
 	myInfo = PlayerInfo();
 	myInfo.health = this->health;
-	myInfo.opponentHealth = 100;
 
 	myInfo.isAttacking = isAttacking;
-	myInfo.isFalling = isFalling;
-	myInfo.isJumping = isJumping;
 
-	myInfo.scaleX = this->mySprite.activeSprite.sprite.getScale().x;
-	myInfo.scaleY = this->mySprite.activeSprite.sprite.getScale().y;
-
-	myInfo.accumultorAttack = attackAccumulator;
-
-	myInfo.velocity = this->velocity;
-
-	myInfo.playerPos.x = this->mySprite.activeSprite.sprite.getPosition().x;
-	myInfo.playerPos.y = this->mySprite.activeSprite.sprite.getPosition().y;
+	myInfo.isMovingLeft = isMovingLeft;
+	myInfo.isMovingRight = isMovingRight;
+	myInfo.jumping = jumping;
+	myInfo.isDamaging = isDamaging;
 }
 
 
@@ -43,40 +35,73 @@ void Player::getDamage()
 	}
 }
 
-void Player::updateMyInfo(PlayerInfo &info, Player &opponent)
+void Player::updateMyInfo(PlayerInfo &info, float timeStamp)
 {
-	info.opponentHealth = opponent.health;
+	info.health = this->health;
+	
+	info.timestamp = timeStamp;
 
 	info.isAttacking = this->isAttacking;
-	info.isFalling = this->isFalling;
-	info.isJumping = this->isJumping;
 
-	info.scaleX = this->mySprite.activeSprite.sprite.getScale().x;
-	info.scaleY = this->mySprite.activeSprite.sprite.getScale().y;
-
-	info.accumultorAttack = this->attackAccumulator;
-
-	info.velocity = this->velocity;
-
-	info.playerPos.x = this->mySprite.activeSprite.sprite.getPosition().x;
-	info.playerPos.y = this->mySprite.activeSprite.sprite.getPosition().y;
+	info.isMovingLeft = this->isMovingLeft;
+	info.isMovingRight = this->isMovingRight;
+	info.jumping = this->jumping;
+	info.isDamaging = this->isDamaging;
 }
 
 void Player::retrieveMyNewInfo(PlayerInfo &info, Player &opponent)
 {
-	opponent.health = info.opponentHealth;
+	this->health = info.health;
 
 	isAttacking = info.isAttacking;
-	isFalling = info.isFalling;
-	isJumping = info.isJumping;
 
-	this->mySprite.activeSprite.sprite.setScale(info.scaleX, info.scaleY);
+	this->isMovingLeft = info.isMovingLeft;
+	this->isMovingRight = info.isMovingRight;
+	this->jumping = info.jumping;
+	this->isDamaging = info.isDamaging;
 
-	attackAccumulator = info.accumultorAttack;
+	if (info.isDamaging)
+	{
+		opponent.getDamage();
+	}
+}
 
-	velocity = info.velocity;
+void Player::updatePlayerState(float dt)
+{
+	if (isMovingLeft)
+	{
+		moveLeft(dt);
+	}
+	else if (isMovingRight)
+	{
+		moveRight(dt);
+	}
+	else 
+	{
+		this->velocity.x = 0.0f;
+	}
 
-	this->mySprite.activeSprite.sprite.setPosition(info.playerPos);
+	if (jumping)
+	{
+		this->jump(dt);
+	}
+
+	//move sprite to updated position
+	this->mySprite.activeSprite.sprite.move(this->velocity * dt);
+
+	//apply gravity
+	if (this->mySprite.activeSprite.sprite.getPosition().y < 400.0f)
+	{
+		this->velocity.y += GRAVITY * dt;
+		this->mySprite.activeSprite.sprite.move(this->velocity * dt);
+		this->jumping = false;
+	}
+	else if (this->mySprite.activeSprite.sprite.getPosition().y >= 400.0f)
+	{
+		this->mySprite.activeSprite.sprite.setPosition(this->mySprite.activeSprite.sprite.getPosition().x, 400.0f);
+		this->velocity.y = 0.0f;
+		this->jumping = false;
+	}
 }
 
 void Player::updateHealthBar(sf::Sprite &health, sf::Vector2f originalHealthScale)

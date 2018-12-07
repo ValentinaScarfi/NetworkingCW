@@ -4,6 +4,7 @@
 
 PlayState::PlayState(int playerSprite, int playerID, std::string opponentIP, unsigned short oppPort, int oppSpriteID, unsigned short myPort, GameDataRef data) : _data(data), server(myPort), client(opponentIP, oppPort)
 {
+	clock.restart();
 	this->spriteID = playerSprite;
 	this->playerID = playerID;
 	std::cout << "\n" << this->playerID << std::endl;
@@ -66,11 +67,6 @@ void PlayState::Init()
 	}
 }
 
-//float PlayState::calculatePercentage(float baseNumber, int percentage)
-//{
-//	return (baseNumber * percentage) / 100.0f;
-//}
-
 void PlayState::HandleInput()
 {
 	sf::Event event;
@@ -87,10 +83,15 @@ void PlayState::HandleInput()
 			this->player->isAttacking = true;
 			if (this->player->checkCollision(playerOpponent->mySprite.activeSprite.sprite))
 			{
-				playerOpponent->getDamage();
-				
-				this->playerOpponent->updateHealthBar(healthBarOpponent, originalHealthScale);
+				//playerOpponent->getDamage();
+				this->player->isDamaging = true;
 			}
+		}
+
+		//Jump
+		if (this->_data->input.isActionKeyPressed(event, sf::Keyboard::Space) && !this->player->jumping)
+		{
+			this->player->jumping = true;
 		}
 
 		if (event.type == sf::Event::LostFocus)
@@ -102,72 +103,62 @@ void PlayState::HandleInput()
 			isWindowFocus = true;
 		}
 	}
-
 }
 
 void PlayState::Update(float dt)
 {
-	//Animate and window boundaries
-	player->mySprite.Animate();
-	player->windowSize = this->_data->window.getView().getSize().x;
-
 	//input for movement
 	if (this->_data->input.isAxisKeyPressed(sf::Keyboard::D) && isWindowFocus)
 	{
-		this->player->moveRight(dt);
+		this->player->isMovingRight = true;
+		this->player->isMovingLeft = false;
 	}
 	else if (this->_data->input.isAxisKeyPressed(sf::Keyboard::A) && isWindowFocus)
 	{
-		this->player->moveLeft(dt);
+		this->player->isMovingRight = false;
+		this->player->isMovingLeft = true;
 	}
 	else
 	{
-		this->player->velocity.x = 0.0f;
+		this->player->isMovingRight = false;
+		this->player->isMovingLeft = false;
 	}
 
-	//Jump
-	if (this->_data->input.isAxisKeyPressed(sf::Keyboard::Space) && this->player->canJump && isWindowFocus)
-	{
-		this->player->canJump = false;
-		this->player->jump(dt);
-	}
-
-	//move sprite to updated position
-	this->player->mySprite.activeSprite.sprite.move(this->player->velocity * dt);
-
-	//apply gravity
-	if (this->player->mySprite.activeSprite.sprite.getPosition().y < 400.0f)
-	{
-		this->player->velocity.y += GRAVITY * dt;
-		this->player->mySprite.activeSprite.sprite.move(this->player->velocity * dt);
-	}
-	else if (this->player->mySprite.activeSprite.sprite.getPosition().y >= 400.0f)
-	{
-		this->player->mySprite.activeSprite.sprite.setPosition(this->player->mySprite.activeSprite.sprite.getPosition().x, 400.0f);
-		this->player->velocity.y = 0.0f;
-		this->player->canJump = true;
-	}
-
-	updateAnimation(this->player);
 	
+	float currentTime = clock.getElapsedTime().asMilliseconds();
 
 	//------send and receive updates client - server peer to peer
-	this->player->updateMyInfo(this->player->myInfo, *playerOpponent);
+	this->player->updateMyInfo(this->player->myInfo, currentTime);
 
 	client.sendPlayerData(sPacket, this->player->myInfo);
 	server.receiveOpponentData(rPacket, tempOpponent);
 
 	this->playerOpponent->retrieveMyNewInfo(tempOpponent, *player);
-	
-	updateAnimation(this->playerOpponent);
 
+	if (tempOpponent.timestamp > this->player->myInfo.timestamp + 100 || tempOpponent.timestamp < this->player->myInfo.timestamp - 100)
+	{
+		std::cout << "Desynchronised" << std::endl;
+	}
+
+	//Animate and window boundaries
+	player->mySprite.Animate();
+	player->windowSize = this->_data->window.getView().getSize().x;
+	this->player->updatePlayerState(dt);
+	
+	playerOpponent->updatePlayerState(dt);
 	playerOpponent->mySprite.Animate();
 	playerOpponent->windowSize = this->_data->window.getView().getSize().x;
 
+	updateAnimation(this->playerOpponent);
+	updateAnimation(this->player);
+
 	this->player->updateHealthBar(healthBar, originalHealthScale);
+	this->playerOpponent->updateHealthBar(healthBarOpponent, originalHealthScale);
+
+	this->player->isDamaging = false;
 }
 
-void PlayState::Draw(float dt)
+void PlayState::Draw()
 {
 	this->_data->window.clear();
 

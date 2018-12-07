@@ -14,7 +14,7 @@ public:
 	void Init();
 	void HandleInput();
 	void Update(float dt);
-	void Draw(float dt);
+	void Draw();
 
 private:
 	GameDataRef _data;

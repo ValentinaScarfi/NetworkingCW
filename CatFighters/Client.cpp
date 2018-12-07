@@ -15,13 +15,10 @@ Client::~Client()
 
 sf::Packet& operator <<(sf::Packet& packet, const PlayerInfo& player)
 {
-	return packet << player.health << player.opponentHealth 
-		<< player.isAttacking << player.isFalling << player.isJumping 
-		//<< player.isAnimAttacking << player.isAnimFalling << player.isAnimJumping
-		<< player.scaleX << player.scaleY
-		<< player.accumultorAttack
-		<< player.velocity.x << player.velocity.y
-		<< player.playerPos.x << player.playerPos.y;
+	return packet << player.health
+		<< player.timestamp
+		<< player.isAttacking << player.isMovingLeft << player.isMovingRight << player.jumping
+		<< player.isDamaging;
 }
 
 void Client::connectToServerPeer()

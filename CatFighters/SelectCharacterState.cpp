@@ -64,7 +64,7 @@ void SelectCharacterState::Update(float dt)
 {
 }
 
-void SelectCharacterState::Draw(float dt)
+void SelectCharacterState::Draw()
 {
 	this->_data->window.clear(sf::Color::Red);
 	this->_data->window.draw(this->pepperSelection);

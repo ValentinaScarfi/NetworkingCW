@@ -14,7 +14,7 @@ public:
 
 	void ChangeState(StateRef newState);
 
-	//Run at start of each loop in Game.cpp
+	//run at start of game loop. If state changed, the Init() is called only once.
 	void ProcessStateChanges();
 
 	StateRef &GetActiveState();
@@ -24,6 +24,6 @@ private:
 	StateRef currentState;
 	StateRef newState;
 
-	bool isAdding;
+	bool isChangingState;
 };
 

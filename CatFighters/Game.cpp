@@ -10,6 +10,7 @@ Game::Game(int width, int height, std::string title)
 	_data->window.setFramerateLimit(60);
 	_data->window.setKeyRepeatEnabled(false);
 
+	//load default font
 	_data->assets.LoadFont("Default Font", FONT);
 	_data->assets.LoadTexture("Generic Texture", GENERIC_TEXTURE);
 
@@ -18,22 +19,21 @@ Game::Game(int width, int height, std::string title)
 
 void Game::Run()
 {
-	float newTime, frameTime, interpolation;
+	float newTime, frameTime;
 
 	float currentTime = this->clock.getElapsedTime().asSeconds();
 	float accumulator = 0.0f;
 
+	//Main game loop
 	while (this->_data->window.isOpen())
 	{
+		//process game state changes, calling init() accordingly
 		this->_data->machine.ProcessStateChanges();
 
 		newTime = this->clock.getElapsedTime().asSeconds();
-		frameTime = newTime - currentTime;
 
-		if (frameTime > 0.25f)
-		{
-			frameTime = 0.25f;
-		}
+		//how long it took between frames
+		frameTime = newTime - currentTime;
 
 		currentTime = newTime;
 		accumulator += frameTime;
@@ -46,8 +46,7 @@ void Game::Run()
 			accumulator -= dt;
 		}
 
-		interpolation = accumulator / dt;
-		this->_data->machine.GetActiveState()->Draw(interpolation);
+		this->_data->machine.GetActiveState()->Draw();
 	}
 
 }

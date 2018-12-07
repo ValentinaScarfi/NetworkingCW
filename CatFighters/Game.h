@@ -8,7 +8,7 @@
 #include "AssetManager.h"
 #include "InputManager.h"
 
-
+//Struct to hold common dat to each state
 struct GameData
 {
 	StateMachine machine;
@@ -25,7 +25,7 @@ public:
 	Game(int width, int height, std::string title);
 	
 private:
-	// Updates run at 60 per second.
+	//updates run at 60 per second.
 	const float dt = 1.0f / 60.0f;
 	sf::Clock clock;
 

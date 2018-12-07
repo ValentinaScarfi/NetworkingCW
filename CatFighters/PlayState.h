@@ -17,7 +17,7 @@ public:
 	void Init();
 	void HandleInput();
 	void Update(float dt);
-	void Draw(float dt);
+	void Draw();
 
 private:
 	GameDataRef _data;
@@ -29,9 +29,7 @@ private:
 
 	Server server;
 	Client client;
-
-	//float calculatePercentage(float baseNumber, int percentage);
-
+	
 	sf::Packet sPacket;
 	sf::Packet rPacket;
 

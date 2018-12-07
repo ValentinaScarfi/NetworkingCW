@@ -4,20 +4,14 @@
 
 struct PlayerInfo
 {
+	float timestamp;
 	int health;
-	int opponentHealth;
 
-	bool isFalling;
-	bool isJumping;
 	bool isAttacking;
-
-	int accumultorAttack;
-
-	float scaleX;
-	float scaleY;
-
-	sf::Vector2f velocity;
-	sf::Vector2f playerPos;
+	bool isMovingLeft;
+	bool isMovingRight;
+	bool jumping;
+	bool isDamaging;
 };
 
 class Player
@@ -32,8 +26,10 @@ public:
 	int spriteID;
 
 	void getDamage();
-	void updateMyInfo(PlayerInfo &info, Player &opponent);
+	void updateMyInfo(PlayerInfo &info, float timeStamp);
 	void retrieveMyNewInfo(PlayerInfo &info, Player &opponent);
+
+	void updatePlayerState(float dt);
 
 	void updateHealthBar(sf::Sprite &health, sf::Vector2f originalHealthScale);
 
@@ -49,11 +45,16 @@ public:
 
 	bool checkCollision(sf::Sprite boundsOpponent);
 
+	bool isMovingLeft = false;
+	bool isMovingRight = false;
+	bool isDamaging = false;
+
 	bool isFalling = false;
 	bool isJumping = false;
 	bool isAttacking = false;
+
 	bool canAttack = true;
-	bool canJump = true;
+	bool jumping = false;
 
 	sf::Vector2f velocity;
 

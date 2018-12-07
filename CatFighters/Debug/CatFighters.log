@@ -1,16 +1,16 @@
-﻿  CatFighters.cpp
+﻿  Client.cpp
   ClientMatchmakeState.cpp
-  Game.cpp
-  Menu.cpp
   PlayState.cpp
-c:\networkingcw\catfighters\playstate.cpp(19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
 c:\networkingcw\catfighters\playstate.cpp(20): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\networkingcw\catfighters\playstate.cpp(25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\networkingcw\catfighters\playstate.cpp(31): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\networkingcw\catfighters\playstate.cpp(35): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\networkingcw\catfighters\playstate.cpp(42): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\networkingcw\catfighters\playstate.cpp(46): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\networkingcw\catfighters\playstate.cpp(21): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\networkingcw\catfighters\playstate.cpp(26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\networkingcw\catfighters\playstate.cpp(32): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\networkingcw\catfighters\playstate.cpp(36): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\networkingcw\catfighters\playstate.cpp(43): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\networkingcw\catfighters\playstate.cpp(47): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\networkingcw\catfighters\playstate.cpp(128): warning C4244: 'initializing': conversion from 'sf::Int32' to 'float', possible loss of data
+  Player.cpp
   SelectCharacterState.cpp
-  StateMachine.cpp
+  Server.cpp
   Generating Code...
   CatFighters.vcxproj -> C:\NetworkingCW\CatFighters\Debug\CatFighters.exe
