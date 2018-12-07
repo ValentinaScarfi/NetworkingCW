@@ -45,17 +45,17 @@ void SelectCharacterState::HandleInput()
 		if (this->_data->input.isSpriteClicked(this->simbaSelection, event, this->_data->window))
 		{
 			//this->_data->machine.AddState(StateRef(new PlayState(1, 1, "localhost", 5555, 2, _data)), true);
-			this->_data->machine.AddState(StateRef(new ClientMatchmakeState(1, _data)), true);
+			this->_data->machine.ChangeState(StateRef(new ClientMatchmakeState(1, _data)));
 		}
 		else if (this->_data->input.isSpriteClicked(this->pepperSelection, event, this->_data->window))
 		{
 			//this->_data->machine.AddState(StateRef(new PlayState(2, 1, "localhost", 5555, 2, _data)), true);
-			this->_data->machine.AddState(StateRef(new ClientMatchmakeState(2, _data)), true);
+			this->_data->machine.ChangeState(StateRef(new ClientMatchmakeState(2, _data)));
 		}
 		else if (this->_data->input.isSpriteClicked(this->gigioSelection, event, this->_data->window))
 		{
 			//this->_data->machine.AddState(StateRef(new PlayState(3, 1, "localhost", 5555, 2, _data)), true);
-			this->_data->machine.AddState(StateRef(new ClientMatchmakeState(3, _data)), true);
+			this->_data->machine.ChangeState(StateRef(new ClientMatchmakeState(3, _data)));
 		}
 	}
 }

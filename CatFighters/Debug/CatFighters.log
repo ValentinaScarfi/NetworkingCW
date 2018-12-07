@@ -1,5 +1,7 @@
-﻿  Client.cpp
+﻿  CatFighters.cpp
   ClientMatchmakeState.cpp
+  Game.cpp
+  Menu.cpp
   PlayState.cpp
 c:\networkingcw\catfighters\playstate.cpp(19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
 c:\networkingcw\catfighters\playstate.cpp(20): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
@@ -8,8 +10,7 @@ c:\networkingcw\catfighters\playstate.cpp(31): warning C4244: 'argument': conver
 c:\networkingcw\catfighters\playstate.cpp(35): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 c:\networkingcw\catfighters\playstate.cpp(42): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 c:\networkingcw\catfighters\playstate.cpp(46): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  Player.cpp
   SelectCharacterState.cpp
-  Server.cpp
+  StateMachine.cpp
   Generating Code...
   CatFighters.vcxproj -> C:\NetworkingCW\CatFighters\Debug\CatFighters.exe

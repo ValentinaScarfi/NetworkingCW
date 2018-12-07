@@ -32,7 +32,7 @@ void Menu::HandleInput()
 
 		if (this->_data->input.isSpriteClicked(this->playButton, event, this->_data->window))
 		{
-			this->_data->machine.AddState(StateRef(new SelectCharacterState(_data)), true);
+			this->_data->machine.ChangeState(StateRef(new SelectCharacterState(_data)));
 		}
 	}
 }

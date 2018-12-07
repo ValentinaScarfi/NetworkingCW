@@ -196,7 +196,7 @@ void ClientMatchmakeState::Update(float dt)
 			if (s == "clientready")
 			{
 				socket.disconnect();
-				this->_data->machine.AddState(StateRef(new PlayState(tempSpriteID, clientID, opponentIp, opponentPort, opponentSpriteID, myPort, _data)), true);
+				this->_data->machine.ChangeState(StateRef(new PlayState(tempSpriteID, clientID, opponentIp, opponentPort, opponentSpriteID, myPort, _data)));
 			}
 			else
 			{
