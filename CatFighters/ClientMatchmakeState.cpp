@@ -195,12 +195,13 @@ void ClientMatchmakeState::Update(float dt)
 			packet >> clientID >> s >> opponentIp >> opponentPort >> myPort >> opponentSpriteID;
 			if (s == "clientready")
 			{
-				socket.disconnect();
+				
 				this->_data->machine.ChangeState(StateRef(new PlayState(tempSpriteID, clientID, opponentIp, opponentPort, opponentSpriteID, myPort, _data)));
+				socket.disconnect();
 			}
 			else
 			{
-				std::cout << clientID << s << packetCounter << opponentIp << opponentPort << opponentSpriteID << std::endl;
+				std::cout << clientID << s << packetCounter << std::endl;
 				packetS << clientID << s << packetCounter << tempSpriteID;
 				socket.send(packetS);
 				packetCounter++;

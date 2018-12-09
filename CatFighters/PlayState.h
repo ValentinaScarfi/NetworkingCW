@@ -5,7 +5,6 @@
 #include "Game.h"
 #include "Player.h"
 #include "Server.h"
-#include "Client.h"
 
 class PlayState : public State
 {
@@ -22,18 +21,22 @@ public:
 private:
 	GameDataRef _data;
 
+	sf::Text endGameText;
+
 	Player *player;
 	Player *playerOpponent;
 
 	PlayerInfo tempOpponent;
 
-	Server server;
-	Client client;
-	
+	Connection conn;
+
+	float currentTime;
 	sf::Packet sPacket;
 	sf::Packet rPacket;
 
 	bool isWindowFocus = false;
+	bool desync = false;
+	bool resynched = false;
 
 	int spriteID;
 	int playerID;
@@ -50,4 +53,5 @@ private:
 	sf::Vector2f originalHealthScale;
 
 	void updateAnimation(Player *player);
+	void checkEndOfGame();
 };

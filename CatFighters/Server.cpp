@@ -2,13 +2,14 @@
 #include "Server.h"
 
 
-Server::Server(unsigned short myPort)
+Connection::Connection(unsigned short myPort, std::string opponentIP, unsigned short oppPort)
 {
 	this->myPort = myPort;
+	this->oppIP = opponentIP;
+	this->oppPort = oppPort;
 }
 
-
-Server::~Server()
+Connection::~Connection()
 {
 }
 
@@ -16,11 +17,21 @@ sf::Packet& operator >>(sf::Packet& packet, PlayerInfo& player)
 {
 	return packet >> player.health
 		>> player.timestamp
+		>> player.position.x >> player.position.y
 		>> player.isAttacking >> player.isMovingLeft >> player.isMovingRight >> player.jumping
 		>> player.isDamaging;
 }
 
-void Server::listenToPeer()
+sf::Packet& operator <<(sf::Packet& packet, const PlayerInfo& player)
+{
+	return packet << player.health
+		<< player.timestamp
+		<< player.position.x << player.position.y
+		<< player.isAttacking << player.isMovingLeft << player.isMovingRight << player.jumping
+		<< player.isDamaging;
+}
+
+void Connection::listenToPeer()
 {
 	sf::Socket::Status status = listener.listen(this->myPort);
 
@@ -30,31 +41,65 @@ void Server::listenToPeer()
 	}
 }
 
-void Server::acceptPeer()
+void Connection::acceptPeer()
 {
+
 	sf::Socket::Status status = listener.accept(clientPeer);
 
 	if (status != sf::Socket::Done)
 	{
 		std::cout << "Can't connect with peer client" << std::endl;
+		disconnected = true;
 	}
 	else
 	{
 		std::cout << "Client Connected" << std::endl;
+		
 	}
+	
 }
 
-void Server::receiveOpponentData(sf::Packet packet, PlayerInfo &info)
+void Connection::receiveOpponentData(sf::Packet packet, PlayerInfo &info)
 {
 	sf::Socket::Status status = clientPeer.receive(packet);
 
 	if (status != sf::Socket::Done)
 	{
 		std::cout << "Can't receive data from client" << std::endl;
+		disconnected = true;
 	}
 	else
 	{
 		packet >> info;
+	}
+
+}
+
+void Connection::sendPlayerData(sf::Packet packet, PlayerInfo &info)
+{
+	packet << info;
+
+	sf::Socket::Status status = clientPeer.send(packet);
+
+	if (status != sf::Socket::Done)
+	{
+		std::cout << "Can't send data to server" << std::endl;
+		disconnected = true;
+	}
+}
+
+void Connection::connectToServerPeer()
+{
+	sf::Socket::Status status = clientPeer.connect(oppIP, oppPort);
+	if (status != sf::Socket::Done)
+	{
+		std::cout << "Can't connect to peer server" << std::endl;
+		disconnected = true;
+	}
+	else
+	{
+		std::cout << "Connected to server" << std::endl;
+
 	}
 }
 

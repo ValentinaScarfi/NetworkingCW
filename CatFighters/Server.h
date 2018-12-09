@@ -3,20 +3,29 @@
 #include "Player.h"
 #include <iostream>
 
-class Server
+class Connection
 {
 public:
-	Server(unsigned short myPort);
-	~Server();
+	Connection(unsigned short myPort, std::string opponentIP, unsigned short oppPort);
+	~Connection();
 
 	void listenToPeer();
 	void acceptPeer();
+	void connectToServerPeer();
 	void receiveOpponentData(sf::Packet packet, PlayerInfo &info);
+	void sendPlayerData(sf::Packet packet, PlayerInfo &info);
+
+	bool disconnected = false;
+
+	sf::TcpSocket clientPeer;
+	sf::SocketSelector selector;
 
 private:
 
 	sf::TcpListener listener;
-	sf::TcpSocket clientPeer;
+
 	unsigned short myPort;
+	std::string oppIP;
+	unsigned short oppPort;
 };
 

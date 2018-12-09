@@ -11,6 +11,8 @@ Player::Player(int playerSpriteID) : mySprite(playerSpriteID)
 
 	myInfo.isAttacking = isAttacking;
 
+	myInfo.position = mySprite.activeSprite.sprite.getPosition();
+
 	myInfo.isMovingLeft = isMovingLeft;
 	myInfo.isMovingRight = isMovingRight;
 	myInfo.jumping = jumping;
@@ -27,11 +29,17 @@ float Player::calculatePercentage(float baseNumber, int percentage)
 	return (baseNumber * percentage) / 100.0f;
 }
 
+void Player::storePreviousInfo(PlayerInfo &info)
+{
+	previousPosition.push_back(info.position);
+	previousTime.push_back(info.timestamp);
+}
+
 void Player::getDamage()
 {
 	if (this->health > 0)
 	{
-		this->health -= 1;
+		this->health -= 10;
 	}
 }
 
@@ -42,6 +50,8 @@ void Player::updateMyInfo(PlayerInfo &info, float timeStamp)
 	info.timestamp = timeStamp;
 
 	info.isAttacking = this->isAttacking;
+
+	info.position = mySprite.activeSprite.sprite.getPosition();
 
 	info.isMovingLeft = this->isMovingLeft;
 	info.isMovingRight = this->isMovingRight;
@@ -55,6 +65,8 @@ void Player::retrieveMyNewInfo(PlayerInfo &info, Player &opponent)
 
 	isAttacking = info.isAttacking;
 
+	mySprite.activeSprite.sprite.setPosition(info.position);
+
 	this->isMovingLeft = info.isMovingLeft;
 	this->isMovingRight = info.isMovingRight;
 	this->jumping = info.jumping;
@@ -64,6 +76,8 @@ void Player::retrieveMyNewInfo(PlayerInfo &info, Player &opponent)
 	{
 		opponent.getDamage();
 	}
+
+	storePreviousInfo(info);
 }
 
 void Player::updatePlayerState(float dt)
@@ -107,6 +121,24 @@ void Player::updatePlayerState(float dt)
 void Player::updateHealthBar(sf::Sprite &health, sf::Vector2f originalHealthScale)
 {
 	health.setScale(calculatePercentage(originalHealthScale.x, this->health), health.getScale().y);
+}
+
+void Player::linearPrediction()
+{
+	int size = previousPosition.size();
+	if (size >= 2)
+	{
+		const sf::Vector2f& pos0 = previousPosition[size - 1];
+		const sf::Vector2f& pos1 = previousPosition[size - 2];
+		const float& time0 = previousTime[size - 1];
+		const float& time1 = previousTime[size - 2];
+
+		sf::Vector2f diffPos = pos1 - pos0;
+		float diffTime = time1 - time0;
+		sf::Vector2f predictedPos = diffPos * diffTime;
+
+		this->mySprite.activeSprite.sprite.setPosition(predictedPos);
+	}
 }
 
 void Player::moveLeft(float dt)

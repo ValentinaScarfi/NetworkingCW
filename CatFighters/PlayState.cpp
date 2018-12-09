@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "PlayState.h"
 #include <iostream>
+#include "ClientMatchmakeState.h"
 
-PlayState::PlayState(int playerSprite, int playerID, std::string opponentIP, unsigned short oppPort, int oppSpriteID, unsigned short myPort, GameDataRef data) : _data(data), server(myPort), client(opponentIP, oppPort)
+PlayState::PlayState(int playerSprite, int playerID, std::string opponentIP, unsigned short oppPort, int oppSpriteID, unsigned short myPort, GameDataRef data) : _data(data), conn(myPort, opponentIP, oppPort)
 {
-	clock.restart();
 	this->spriteID = playerSprite;
 	this->playerID = playerID;
 	std::cout << "\n" << this->playerID << std::endl;
@@ -14,6 +14,13 @@ PlayState::PlayState(int playerSprite, int playerID, std::string opponentIP, uns
 
 void PlayState::Init()
 {
+
+	//Title
+	endGameText.setFont(this->_data->assets.GetFont("Default Font"));
+	endGameText.setString("");
+	endGameText.setCharacterSize(50);
+	endGameText.setFillColor(sf::Color::White);
+
 	this->_data->assets.LoadTexture("Game Background", BACKGROUND_GAME);
 	background.setTexture(this->_data->assets.GetTexture("Game Background"));
 
@@ -52,19 +59,28 @@ void PlayState::Init()
 		player->mySprite.loadSprite(true);
 		playerOpponent->mySprite.loadSprite();
 
-		client.connectToServerPeer();
-		server.listenToPeer();
-		server.acceptPeer();
+		conn.connectToServerPeer();
+		conn.listenToPeer();
+		conn.acceptPeer();
 	}
 	else 
 	{
 		player->mySprite.loadSprite();
 		playerOpponent->mySprite.loadSprite(true);
 
-		server.listenToPeer();
-		server.acceptPeer();
-		client.connectToServerPeer();
+		conn.listenToPeer();
+		conn.acceptPeer();
+		conn.connectToServerPeer();
 	}
+
+	if (conn.disconnected)
+	{
+		this->_data->machine.ChangeState(StateRef(new ClientMatchmakeState(spriteID, _data)));
+	}
+	
+	conn.selector.add(conn.clientPeer);
+
+	clock.restart();
 }
 
 void PlayState::HandleInput()
@@ -124,27 +140,57 @@ void PlayState::Update(float dt)
 		this->player->isMovingLeft = false;
 	}
 
-	
-	float currentTime = clock.getElapsedTime().asMilliseconds();
-
-	//------send and receive updates client - server peer to peer
+	currentTime = clock.getElapsedTime().asMilliseconds();
 	this->player->updateMyInfo(this->player->myInfo, currentTime);
 
-	client.sendPlayerData(sPacket, this->player->myInfo);
-	server.receiveOpponentData(rPacket, tempOpponent);
+	//------send and receive updates client - server peer to peer
+	if (playerID == 1)
+	{
+		conn.sendPlayerData(sPacket, this->player->myInfo);
+		if (conn.selector.wait())
+		{
+			if (conn.selector.isReady(conn.clientPeer))
+			{
+				conn.receiveOpponentData(rPacket, tempOpponent);
+				this->playerOpponent->retrieveMyNewInfo(tempOpponent, *player);
+			}
+		}
+	}
+	else
+	{
+		if (conn.selector.wait())
+		{
+			if (conn.selector.isReady(conn.clientPeer))
+			{
+				conn.receiveOpponentData(rPacket, tempOpponent);
+				conn.sendPlayerData(sPacket, this->player->myInfo);
+				this->playerOpponent->retrieveMyNewInfo(tempOpponent, *player);
+			}
+		}
+	}
 
-	this->playerOpponent->retrieveMyNewInfo(tempOpponent, *player);
+	if (conn.disconnected)
+	{
+		this->_data->machine.ChangeState(StateRef(new ClientMatchmakeState(spriteID, _data)));
+	}
 
-	if (tempOpponent.timestamp > this->player->myInfo.timestamp + 100 || tempOpponent.timestamp < this->player->myInfo.timestamp - 100)
+	if (this->player->myInfo.timestamp > tempOpponent.timestamp + 100.0f || tempOpponent.timestamp > this->player->myInfo.timestamp + 100.0f
+		|| this->player->myInfo.timestamp < tempOpponent.timestamp - 100.0f || tempOpponent.timestamp < this->player->myInfo.timestamp - 100.0f)
 	{
 		std::cout << "Desynchronised" << std::endl;
+		this->playerOpponent->linearPrediction();
+		conn.clientPeer.setBlocking(false);
+	}
+	else
+	{
+		conn.clientPeer.setBlocking(true);
 	}
 
 	//Animate and window boundaries
+	this->player->updatePlayerState(dt);
 	player->mySprite.Animate();
 	player->windowSize = this->_data->window.getView().getSize().x;
-	this->player->updatePlayerState(dt);
-	
+
 	playerOpponent->updatePlayerState(dt);
 	playerOpponent->mySprite.Animate();
 	playerOpponent->windowSize = this->_data->window.getView().getSize().x;
@@ -156,6 +202,7 @@ void PlayState::Update(float dt)
 	this->playerOpponent->updateHealthBar(healthBarOpponent, originalHealthScale);
 
 	this->player->isDamaging = false;
+	checkEndOfGame();
 }
 
 void PlayState::Draw()
@@ -166,6 +213,8 @@ void PlayState::Draw()
 	this->_data->window.draw(this->healthBorder);
 	this->_data->window.draw(this->healthBar);
 	player->mySprite.Draw(this->_data->window);
+
+	this->_data->window.draw(this->endGameText);
 
 	//opponent
 	this->_data->window.draw(this->healthBorderOpponent);
@@ -234,5 +283,26 @@ void PlayState::updateAnimation(Player *playerCurrent)
 			playerCurrent->mySprite.animationMachine();
 		}
 	}
+}
+
+void PlayState::checkEndOfGame()
+{
+	if (this->player->health == 0)
+	{
+		//lost
+		endGameText.setString("YOU LOST");
+	}
+	else if (this->playerOpponent->health == 0)
+	{
+		//won
+		endGameText.setString("YOU WON");
+	}
+	else if (this->playerOpponent->health == 0 && this->player->health == 0)
+	{
+		//draw
+		endGameText.setString("DRAW");
+	}
+
+	endGameText.setPosition((SCREEN_WIDTH / 2) - (this->endGameText.getGlobalBounds().width / 2), 100.0f);
 }
 

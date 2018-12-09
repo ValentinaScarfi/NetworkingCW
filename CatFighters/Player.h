@@ -7,6 +7,8 @@ struct PlayerInfo
 	float timestamp;
 	int health;
 
+	sf::Vector2f position;
+
 	bool isAttacking;
 	bool isMovingLeft;
 	bool isMovingRight;
@@ -28,10 +30,10 @@ public:
 	void getDamage();
 	void updateMyInfo(PlayerInfo &info, float timeStamp);
 	void retrieveMyNewInfo(PlayerInfo &info, Player &opponent);
-
 	void updatePlayerState(float dt);
-
 	void updateHealthBar(sf::Sprite &health, sf::Vector2f originalHealthScale);
+
+	void linearPrediction();
 
 	PlayerSheet mySprite;
 	PlayerInfo myInfo;
@@ -66,5 +68,9 @@ private:
 	float groundFloor;
 
 	float calculatePercentage(float baseNumber, int percentage);
+
+	void storePreviousInfo(PlayerInfo &info);
+	std::vector<sf::Vector2f> previousPosition;
+	std::vector<float> previousTime;
 };
 
