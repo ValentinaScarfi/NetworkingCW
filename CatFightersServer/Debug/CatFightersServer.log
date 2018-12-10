@@ -1,5 +1,4 @@
-﻿  stdafx.cpp
-  CatFightersServer.cpp
+﻿  CatFightersServer.cpp
 c:\networkingcw\catfightersserver\catfightersserver.cpp(133): warning C4244: '=': conversion from 'sf::Int64' to 'float', possible loss of data
 c:\networkingcw\catfightersserver\catfightersserver.cpp(188): warning C4018: '<': signed/unsigned mismatch
 c:\networkingcw\catfightersserver\catfightersserver.cpp(210): warning C4018: '<': signed/unsigned mismatch

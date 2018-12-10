@@ -202,7 +202,7 @@ void ClientMatchmakeState::Update(float dt)
 			else
 			{
 				std::cout << clientID << s << packetCounter << std::endl;
-				packetS << clientID << s << packetCounter << tempSpriteID;
+				packetS << clientID << s << packetCounter << tempSpriteID << sf::IpAddress::getLocalAddress().toString();
 				socket.send(packetS);
 				packetCounter++;
 			}
