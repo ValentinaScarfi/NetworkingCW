@@ -128,14 +128,15 @@ void Player::linearPrediction()
 	int size = previousPosition.size();
 	if (size >= 2)
 	{
-		const sf::Vector2f& pos0 = previousPosition[size - 1];
-		const sf::Vector2f& pos1 = previousPosition[size - 2];
-		const float& time0 = previousTime[size - 1];
-		const float& time1 = previousTime[size - 2];
+		const sf::Vector2f& pos1 = previousPosition[size - 1];
+		const sf::Vector2f& pos2 = previousPosition[size - 2];
+		const float& time1 = previousTime[size - 1];
+		const float& time2 = previousTime[size - 2];
 
-		sf::Vector2f diffPos = pos1 - pos0;
-		float diffTime = time1 - time0;
-		sf::Vector2f predictedPos = diffPos * diffTime;
+		sf::Vector2f diffPos = pos2 - pos1;
+		float diffTime = time2 - time1;
+		sf::Vector2f intervalPosition = diffPos / diffTime;
+		sf::Vector2f predictedPos = pos2 + intervalPosition;
 
 		this->mySprite.activeSprite.sprite.setPosition(predictedPos);
 	}

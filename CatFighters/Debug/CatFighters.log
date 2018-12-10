@@ -1,13 +1,2 @@
-﻿  ClientMatchmakeState.cpp
-  PlayState.cpp
-c:\networkingcw\catfighters\playstate.cpp(27): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\networkingcw\catfighters\playstate.cpp(28): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\networkingcw\catfighters\playstate.cpp(33): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\networkingcw\catfighters\playstate.cpp(39): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\networkingcw\catfighters\playstate.cpp(43): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\networkingcw\catfighters\playstate.cpp(50): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\networkingcw\catfighters\playstate.cpp(54): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\networkingcw\catfighters\playstate.cpp(143): warning C4244: '=': conversion from 'sf::Int32' to 'float', possible loss of data
-  SelectCharacterState.cpp
-  Generating Code...
-  CatFighters.vcxproj -> C:\NetworkingCW\CatFighters\Debug\CatFighters.exe
+﻿  Player.cpp
+  CatFighters.vcxproj -> F:\Documenti\Unreal Projects\NetworkingCW\CatFighters\Debug\CatFighters.exe

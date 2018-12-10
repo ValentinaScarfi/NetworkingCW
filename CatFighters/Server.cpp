@@ -66,11 +66,12 @@ void Connection::receiveOpponentData(sf::Packet packet, PlayerInfo &info)
 	if (status != sf::Socket::Done)
 	{
 		std::cout << "Can't receive data from client" << std::endl;
-		disconnected = true;
+		canReceive = false;
 	}
 	else
 	{
 		packet >> info;
+		canReceive = true;
 	}
 
 }
@@ -84,7 +85,11 @@ void Connection::sendPlayerData(sf::Packet packet, PlayerInfo &info)
 	if (status != sf::Socket::Done)
 	{
 		std::cout << "Can't send data to server" << std::endl;
-		disconnected = true;
+		canSend = false;
+	}
+	else
+	{
+		canSend = true;
 	}
 }
 

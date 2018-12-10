@@ -78,7 +78,7 @@ void PlayState::Init()
 		this->_data->machine.ChangeState(StateRef(new ClientMatchmakeState(spriteID, _data)));
 	}
 	
-	conn.selector.add(conn.clientPeer);
+	//conn.selector.add(conn.clientPeer);
 
 	clock.restart();
 }
@@ -147,29 +147,29 @@ void PlayState::Update(float dt)
 	if (playerID == 1)
 	{
 		conn.sendPlayerData(sPacket, this->player->myInfo);
-		if (conn.selector.wait())
-		{
-			if (conn.selector.isReady(conn.clientPeer))
-			{
+		//if (conn.selector.wait())
+		//{
+		//	if (conn.selector.isReady(conn.clientPeer))
+		//	{
 				conn.receiveOpponentData(rPacket, tempOpponent);
 				this->playerOpponent->retrieveMyNewInfo(tempOpponent, *player);
-			}
-		}
+		//	}
+		//}
 	}
 	else
 	{
-		if (conn.selector.wait())
-		{
-			if (conn.selector.isReady(conn.clientPeer))
-			{
+		//if (conn.selector.wait())
+		//{
+		//	if (conn.selector.isReady(conn.clientPeer))
+		//	{
 				conn.receiveOpponentData(rPacket, tempOpponent);
 				conn.sendPlayerData(sPacket, this->player->myInfo);
 				this->playerOpponent->retrieveMyNewInfo(tempOpponent, *player);
-			}
-		}
+		//	}
+		//}
 	}
 
-	if (conn.disconnected)
+	if (!conn.canReceive && !conn.canSend)
 	{
 		this->_data->machine.ChangeState(StateRef(new ClientMatchmakeState(spriteID, _data)));
 	}

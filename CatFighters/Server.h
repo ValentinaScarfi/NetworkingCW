@@ -16,6 +16,8 @@ public:
 	void sendPlayerData(sf::Packet packet, PlayerInfo &info);
 
 	bool disconnected = false;
+	bool canSend = true;
+	bool canReceive = true;
 
 	sf::TcpSocket clientPeer;
 	sf::SocketSelector selector;
