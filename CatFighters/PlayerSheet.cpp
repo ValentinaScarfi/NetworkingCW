@@ -56,6 +56,10 @@ PlayerSheet::PlayerSheet(int spriteID)
 		setSheetAttributes(jumpFallText, jumpFall, 8, 2, 2);
 
 		//attack
+		std::string attackTexture = "Pepper Attack";
+		asset.LoadTexture(attackTexture, PLAYER_SPRITE_PEPPER_ATTACK);
+		sf::Texture &attackText = asset.GetTexture(attackTexture);
+		setSheetAttributes(attackText, attack, 6, 2, 2);
 
 	}
 		break;
@@ -80,6 +84,10 @@ PlayerSheet::PlayerSheet(int spriteID)
 		setSheetAttributes(jumpFallText, jumpFall, 7, 2, 2);
 
 		//attack
+		std::string attackTexture = "Gigio Attack";
+		asset.LoadTexture(attackTexture, PLAYER_SPRITE_GIGIO_ATTACK);
+		sf::Texture &attackText = asset.GetTexture(attackTexture);
+		setSheetAttributes(attackText, attack, 6, 2, 2);
 
 	}
 		break;

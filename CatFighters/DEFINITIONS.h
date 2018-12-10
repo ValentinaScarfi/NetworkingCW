@@ -39,6 +39,8 @@
 
 #define PLAYER_SPRITE_GIGIO_JUMPFALL "Resources/res/Game/jumpFallGigioSheet.png"
 
+#define PLAYER_SPRITE_GIGIO_ATTACK "Resources/res/Game/attackGigioSheet.png"
+
 //Pepper
 
 #define PLAYER_SPRITE_PEPPER_IDLE "Resources/res/Game/idlePepperSheet.png"
@@ -46,6 +48,10 @@
 #define PLAYER_SPRITE_PEPPER_JUMPAIR "Resources/res/Game/jumpAirPepperSheet.png"
 
 #define PLAYER_SPRITE_PEPPER_JUMPFALL "Resources/res/Game/jumpFallPepperSheet.png"
+
+#define PLAYER_SPRITE_PEPPER_ATTACK "Resources/res/Game/attackPepperSheet.png"
+
+//Generic
 
 #define BACKGROUND_GAME "Resources/res/Game/field.png"
 

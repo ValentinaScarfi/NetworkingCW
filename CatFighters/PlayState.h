@@ -36,7 +36,7 @@ private:
 
 	bool isWindowFocus = false;
 	bool desync = false;
-	bool resynched = false;
+	bool gameEnded = false;
 
 	int spriteID;
 	int playerID;

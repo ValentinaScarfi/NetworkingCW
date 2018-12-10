@@ -94,7 +94,7 @@ void PlayState::HandleInput()
 			this->_data->window.close();
 		}
 
-		if (this->_data->input.isActionKeyPressed(event, sf::Keyboard::G))
+		if (this->_data->input.isActionKeyPressed(event, sf::Keyboard::G) && !gameEnded)
 		{
 			this->player->isAttacking = true;
 			if (this->player->checkCollision(playerOpponent->mySprite.activeSprite.sprite))
@@ -291,16 +291,19 @@ void PlayState::checkEndOfGame()
 	{
 		//lost
 		endGameText.setString("YOU LOST");
+		gameEnded = true;
 	}
 	else if (this->playerOpponent->health == 0)
 	{
 		//won
 		endGameText.setString("YOU WON");
+		gameEnded = true;
 	}
 	else if (this->playerOpponent->health == 0 && this->player->health == 0)
 	{
 		//draw
 		endGameText.setString("DRAW");
+		gameEnded = true;
 	}
 
 	endGameText.setPosition((SCREEN_WIDTH / 2) - (this->endGameText.getGlobalBounds().width / 2), 100.0f);
