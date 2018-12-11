@@ -1,8 +1,7 @@
-﻿  stdafx.cpp
-  CatFightersServer.cpp
-f:\documenti\unreal projects\networkingcw\catfightersserver\catfightersserver.cpp(133): warning C4244: '=': conversion from 'sf::Int64' to 'float', possible loss of data
-f:\documenti\unreal projects\networkingcw\catfightersserver\catfightersserver.cpp(188): warning C4018: '<': signed/unsigned mismatch
-f:\documenti\unreal projects\networkingcw\catfightersserver\catfightersserver.cpp(210): warning C4018: '<': signed/unsigned mismatch
+﻿  CatFightersServer.cpp
+f:\documenti\unreal projects\networkingcw\catfightersserver\catfightersserver.cpp(134): warning C4244: '=': conversion from 'sf::Int64' to 'float', possible loss of data
+f:\documenti\unreal projects\networkingcw\catfightersserver\catfightersserver.cpp(189): warning C4018: '<': signed/unsigned mismatch
+f:\documenti\unreal projects\networkingcw\catfightersserver\catfightersserver.cpp(211): warning C4018: '<': signed/unsigned mismatch
 f:\documenti\unreal projects\networkingcw\catfightersserver\catfightersserver.cpp(47): warning C4101: 'dummy': unreferenced local variable
 f:\documenti\unreal projects\networkingcw\catfightersserver\catfightersserver.cpp(46): warning C4101: 'received': unreferenced local variable
   CatFightersServer.vcxproj -> F:\Documenti\Unreal Projects\NetworkingCW\CatFightersServer\Debug\CatFightersServer.exe
